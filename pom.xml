@@ -46,7 +46,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.nju304.uctaserver.UctaserverApplication</mainClass>
+					<mainClass>com.njuse.uctaserver.UctaserverApplication</mainClass>
 				</configuration>
 				<executions>
 					<execution>
