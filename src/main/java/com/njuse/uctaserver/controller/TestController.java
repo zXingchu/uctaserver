@@ -15,7 +15,7 @@ public class TestController {
     @RequestMapping(value = "/isSuccess", method = RequestMethod.GET)
     public @ResponseBody
     String isSuccess(HttpServletRequest request) {
-        return "Success";
+        return "myfirstattempt";
     }
 
 }
