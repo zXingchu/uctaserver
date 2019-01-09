@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -12,15 +13,8 @@ import javax.servlet.http.HttpSession;
 public class UserController {
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public @ResponseBody
-    String tryLogin(String code, HttpSession session){
-        session.setAttribute("code",code);
+    String tryLogin(HttpServletRequest request){
+        HttpSession session = request.getSession();
         return session.getId();
     }
-
-    @RequestMapping(value = "/getCode",method = RequestMethod.GET)
-    public @ResponseBody
-    String getMyCode(HttpSession session){
-        return session.getId();
-    }
-
 }
