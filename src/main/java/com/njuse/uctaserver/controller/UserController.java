@@ -13,6 +13,8 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -29,6 +31,9 @@ public class UserController {
         JSONObject jo = JSONObject.parseObject(re.getBody());
         HttpSession session = request.getSession();
         session.setAttribute("session_key",jo.get("session_key"));
+        Map<String,String> resultmap = new HashMap<String,String>();
+        resultmap.put("openid",jo.get("openid").toString());
+        resultmap.put("sessionid",session.getId());
         return jo.get("openid").toString();
     }
 }
