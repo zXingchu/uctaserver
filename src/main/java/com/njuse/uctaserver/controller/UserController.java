@@ -1,5 +1,7 @@
 package com.njuse.uctaserver.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.njuse.uctaserver.config.MicroProgram;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,9 @@ public class UserController {
         String jscode = request.getParameter("code");
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> re = rt.getForEntity("https://api.weixin.qq.com/sns/jscode2session?appid={1}&secret={2}&js_code={3}&grant_type=authorization_code",String.class,microProgram.getAppID(),microProgram.getAppSecret(),jscode);
-        
-        return re.getBody();
+        JSONObject jo = JSONObject.parseObject(re.getBody());
+        HttpSession session = request.getSession();
+        session.setAttribute("session_key",jo.get("session_key"));
+        return jo.get("openid").toString();
     }
 }
