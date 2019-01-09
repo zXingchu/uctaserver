@@ -14,13 +14,13 @@ public class UserController {
     public @ResponseBody
     String tryLogin(String code, HttpSession session){
         session.setAttribute("code",code);
-        return code;
+        return session.getId();
     }
 
     @RequestMapping(value = "/getCode",method = RequestMethod.GET)
     public @ResponseBody
     String getMyCode(HttpSession session){
-        return session.getAttribute("code").toString();
+        return session.getId();
     }
 
 }
