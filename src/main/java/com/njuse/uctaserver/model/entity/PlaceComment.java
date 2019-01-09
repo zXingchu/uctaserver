@@ -1,10 +1,17 @@
 package com.njuse.uctaserver.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
 
+@Data
 @Entity(name = "place_comment")
+@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler"})
 public class PlaceComment implements Serializable {
 
     @Id
@@ -16,35 +23,4 @@ public class PlaceComment implements Serializable {
 
     private int score;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
-    }
 }

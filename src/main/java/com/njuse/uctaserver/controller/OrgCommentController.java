@@ -56,7 +56,7 @@ public class OrgCommentController {
     })
     @GetMapping(value = "/activity/{id}/score")
     public @ResponseBody
-    ResponseEntity<Integer> score(@PathVariable String id) {
+    ResponseEntity<Integer> getScore(@PathVariable String id) {
         Integer memberComment = new Integer(10);
         return new ResponseEntity<Integer>(memberComment, HttpStatus.OK);
     }

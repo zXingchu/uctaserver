@@ -1,7 +1,9 @@
 package com.njuse.uctaserver.controller;
 
 import com.njuse.uctaserver.model.entity.Activity;
+import com.njuse.uctaserver.service.ActivityService;
 import io.swagger.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,9 @@ import java.util.List;
 @RequestMapping("/activities")
 public class ActivityController {
 
+    @Autowired
+    ActivityService activityService;
+
 
     @ApiOperation(value = "获取当前所有活动")
     @ApiImplicitParams({
@@ -27,8 +32,8 @@ public class ActivityController {
     })
     @GetMapping(value = "")
     public @ResponseBody
-    ResponseEntity<List<Activity>> getAll(@RequestParam(value = "param1", required = true) String param1) {
-        List<Activity> activities = new ArrayList<Activity>();
+    ResponseEntity<List<Activity>> getAll(@RequestParam(value = "param1", required = false) String param1) {
+        List<Activity> activities = activityService.getAll();
         return new ResponseEntity<List<Activity>>(activities, HttpStatus.OK);
     }
 
@@ -42,7 +47,8 @@ public class ActivityController {
     @PostMapping(value = "/")
     public @ResponseBody
     ResponseEntity<String> create(@RequestBody Activity activity) {
-        return new ResponseEntity<String>("ok", HttpStatus.OK);
+        HttpStatus res = activityService.add(activity);
+        return new ResponseEntity<String>(res.getReasonPhrase(), res);
     }
 
     @ApiOperation(value = "删除指定id出游活动")
@@ -54,8 +60,9 @@ public class ActivityController {
     })
     @DeleteMapping(value = "/{id}")
     public @ResponseBody
-    ResponseEntity<String> remove(@PathVariable String id) {
-        return new ResponseEntity<String>("ok", HttpStatus.OK);
+    ResponseEntity<String> delete(@PathVariable String id) {
+        HttpStatus res = activityService.delete(id);
+        return new ResponseEntity<String>(res.getReasonPhrase(), res);
     }
 
     @ApiOperation(value = "更新指定id出游活动")
@@ -73,7 +80,8 @@ public class ActivityController {
     @PostMapping(value = "/{id}")
     public @ResponseBody
     ResponseEntity<String> update(@PathVariable String id, @RequestBody Activity activity) {
-        return new ResponseEntity<String>("ok", HttpStatus.OK);
+        HttpStatus res = activityService.update(activity);
+        return new ResponseEntity<String>(res.getReasonPhrase(), res);
     }
 
     @ApiOperation(value = "获取指定id出游活动")
@@ -86,8 +94,11 @@ public class ActivityController {
     @GetMapping(value = "/{id}")
     public @ResponseBody
     ResponseEntity<Activity> get(@PathVariable String id) {
-        Activity activity = new Activity();
-        return new ResponseEntity<Activity>(activity, HttpStatus.OK);
+        Activity activity = activityService.get(id);
+        HttpStatus res = HttpStatus.OK;
+        if(activity == null)
+            res = HttpStatus.NOT_FOUND;
+        return new ResponseEntity<Activity>(activity, res);
     }
 
 
@@ -104,7 +115,7 @@ public class ActivityController {
     @GetMapping(value = "/user/{id}")
     public @ResponseBody
     ResponseEntity<List<Activity>> getAllByUserId(@PathVariable String id, @RequestParam(value = "param1", required = true) String param1) {
-        List<Activity> activities = new ArrayList<Activity>();
+        List<Activity> activities = activityService.getAll(id);
         return new ResponseEntity<List<Activity>>(activities, HttpStatus.OK);
     }
 

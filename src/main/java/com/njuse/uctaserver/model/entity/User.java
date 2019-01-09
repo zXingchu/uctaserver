@@ -1,10 +1,17 @@
 package com.njuse.uctaserver.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
 
+@Data
 @Entity(name = "user")
+@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler"})
 public class User implements Serializable {
 
     @Id
@@ -15,37 +22,4 @@ public class User implements Serializable {
     private int treadNum;
 
     private String labels;
-
-
-    public String getLabels() {
-        return labels;
-    }
-
-    public void setLabels(String labels) {
-        this.labels = labels;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public int getLikeNum() {
-        return likeNum;
-    }
-
-    public void setLikeNum(int likeNum) {
-        this.likeNum = likeNum;
-    }
-
-    public int getTreadNum() {
-        return treadNum;
-    }
-
-    public void setTreadNum(int treadNum) {
-        this.treadNum = treadNum;
-    }
 }

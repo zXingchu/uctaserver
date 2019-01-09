@@ -1,11 +1,19 @@
 package com.njuse.uctaserver.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
 @Entity(name = "application")
+@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler"})
 public class EntryApplication implements Serializable {
 
     @Id
@@ -15,58 +23,11 @@ public class EntryApplication implements Serializable {
 
     private String userId;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date time;
 
     private String description;
 
     private String status;
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-
-    public String getActId() {
-        return actId;
-    }
-
-    public void setActId(String actId) {
-        this.actId = actId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
 }

@@ -55,7 +55,7 @@ public class PlaceCommentController {
     })
     @GetMapping(value = "/activity/{id}/score")
     public @ResponseBody
-    ResponseEntity<Integer> score(@PathVariable String id) {
+    ResponseEntity<Integer> getScore(@PathVariable String id) {
         Integer placeComment = new Integer(10);
         return new ResponseEntity<Integer>(placeComment, HttpStatus.OK);
     }
