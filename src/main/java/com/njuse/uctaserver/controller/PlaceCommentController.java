@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Api(tags = "Place Comment Controller")
@@ -17,8 +16,12 @@ import java.util.List;
 @RequestMapping("/comment/place/")
 public class PlaceCommentController {
 
+    private final CommentService commentService;
+
     @Autowired
-    CommentService commentService;
+    public PlaceCommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @ApiOperation(value = "获取指定id地点的所有评论")
     @ApiImplicitParam(name = "place", value = "地点名", required = true, dataType = "String", paramType = "path")
@@ -59,8 +62,8 @@ public class PlaceCommentController {
     })
     @GetMapping(value = "/{id}/score")
     public @ResponseBody
-    ResponseEntity<Integer> getScore(@PathVariable String place) {
-        Integer placeComment = commentService.getScoreByPlace(place);
+    ResponseEntity<Double> getScore(@PathVariable String place) {
+        Double placeComment = commentService.getScoreByPlace(place);
         return new ResponseEntity<>(placeComment, HttpStatus.OK);
     }
 

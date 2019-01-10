@@ -23,7 +23,7 @@ public class OrgComment implements Serializable {
 
     private String description;
 
-    private int score;
+    private double score;
 
     private String actId;
 

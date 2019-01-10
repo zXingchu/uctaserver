@@ -2,7 +2,7 @@ package com.njuse.uctaserver.until;
 
 public enum ApplyStatus {
 
-    APPLY("申请", 2), ACCEPT("通过", 0), REJECT("拒绝", 1);
+    APPLY("申请中", 2), ACCEPT("已通过", 0), REJECT("已拒绝", 1);
 
     private String name;
     private int index;

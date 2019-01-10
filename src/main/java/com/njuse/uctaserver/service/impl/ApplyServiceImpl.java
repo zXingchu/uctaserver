@@ -9,17 +9,22 @@ import com.njuse.uctaserver.until.ApplyStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 
 @Service
 public class ApplyServiceImpl implements ApplyService {
 
-    @Autowired
-    EntryApplicationRepo entryApplicationRepo;
+    private final EntryApplicationRepo entryApplicationRepo;
+
+    private final ActivityRepo activityRepo;
 
     @Autowired
-    ActivityRepo activityRepo;
+    public ApplyServiceImpl(EntryApplicationRepo entryApplicationRepo, ActivityRepo activityRepo) {
+        this.entryApplicationRepo = entryApplicationRepo;
+        this.activityRepo = activityRepo;
+    }
 
     @Override
     public HttpStatus add(EntryApplication entryApplication) {

@@ -16,8 +16,12 @@ import java.util.List;
 @RequestMapping("/comment/org/")
 public class OrgCommentController {
 
+    private final CommentService commentService;
+
     @Autowired
-    CommentService commentService;
+    public OrgCommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @ApiOperation(value = "获取指定id活动的所有评论")
     @ApiImplicitParam(name = "id", value = "活动id", required = true, dataType = "String", paramType = "path")
@@ -59,8 +63,8 @@ public class OrgCommentController {
     })
     @GetMapping(value = "/{id}/score")
     public @ResponseBody
-    ResponseEntity<Integer> getScore(@PathVariable String id) {
-        int memberComment = commentService.getScoreByActId(id);
+    ResponseEntity<Double> getScore(@PathVariable String id) {
+        Double memberComment = commentService.getScoreByActId(id);
         return new ResponseEntity<>(memberComment, HttpStatus.OK);
     }
 

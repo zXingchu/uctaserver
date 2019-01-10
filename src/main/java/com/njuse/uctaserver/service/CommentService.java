@@ -16,8 +16,8 @@ public interface CommentService {
 
     HttpStatus addCommentOnPlace(PlaceComment placeComment);
 
-    int getScoreByActId(String actId);
+    double getScoreByActId(String actId);
 
-    int getScoreByPlace(String place);
+    double getScoreByPlace(String place);
 
 }

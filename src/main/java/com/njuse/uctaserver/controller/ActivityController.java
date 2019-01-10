@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Api(tags = "Activity Controller")
@@ -15,13 +16,20 @@ import java.util.List;
 @RequestMapping("/activities")
 public class ActivityController {
 
+    private final ActivityService activityService;
+
     @Autowired
-    ActivityService activityService;
+    public ActivityController(ActivityService activityService) {
+        this.activityService = activityService;
+    }
 
 
     @ApiOperation(value = "获取当前所有活动")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "param1", value = "过滤条件", required = false, dataType = "String", paramType = "query")
+            @ApiImplicitParam(name = "startTime", value = "过滤条件开始时间 startTime", required = false, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "number", value = "过滤条件参与最多人数 number", required = false, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "status", value = "过滤条件状态 status", required = false, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "place", value = "过滤条件活动地点 place", required = false, dataType = "String", paramType = "query")
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
@@ -29,7 +37,10 @@ public class ActivityController {
     })
     @GetMapping(value = "")
     public @ResponseBody
-    ResponseEntity<List<Activity>> getAll(@RequestParam(value = "param1", required = false) String param1) {
+    ResponseEntity<List<Activity>> getAll(@RequestParam(value = "startTime", required = false) String startTime,
+                                          @RequestParam(value = "number", required = false) String number,
+                                          @RequestParam(value = "status", required = false) String status,
+                                          @RequestParam(value = "place", required = false) String place) {
         List<Activity> activities = activityService.getAll();
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
@@ -81,6 +92,24 @@ public class ActivityController {
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 
+    @ApiOperation(value = "审核指定id出游活动")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "出游活动id", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "res", value = "申请结果0：accept|1:reject", required = true, dataType = "int", paramType = "path")
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 304, message = "Not Modified"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @PostMapping(value = "/{id}/{res}")
+    public @ResponseBody
+    ResponseEntity<String> audit(@PathVariable String id, @RequestBody int res) {
+        HttpStatus resCode = activityService.audit(id, res);
+        return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
+    }
+
     @ApiOperation(value = "获取指定id出游活动")
     @ApiImplicitParam(name = "id", value = "出游活动id", required = true, dataType = "String", paramType = "path")
     @ApiResponses({
@@ -92,7 +121,7 @@ public class ActivityController {
     ResponseEntity<Activity> get(@PathVariable String id) {
         Activity activity = activityService.get(id);
         HttpStatus resCode = HttpStatus.OK;
-        if(activity == null)
+        if (activity == null)
             resCode = HttpStatus.NOT_FOUND;
         return new ResponseEntity<>(activity, resCode);
     }
@@ -105,12 +134,24 @@ public class ActivityController {
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 304, message = "Not Modified")
+            @ApiResponse(code = 404, message = "Not Found")
     })
     @GetMapping(value = "/user/{id}")
     public @ResponseBody
     ResponseEntity<List<Activity>> getAllByUserId(@PathVariable String id, @RequestParam(value = "param1", required = true) String param1) {
         List<Activity> activities = activityService.getAll(id);
+        return new ResponseEntity<>(activities, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "获取所有审核中的活动")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @GetMapping(value = "/auditing")
+    public @ResponseBody
+    ResponseEntity<List<Activity>> getAllAuditing() {
+        List<Activity> activities = activityService.getAllAuditing();
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
 

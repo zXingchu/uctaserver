@@ -17,8 +17,12 @@ import java.util.List;
 @RequestMapping("/applications")
 public class ApplyController {
 
+    private final ApplyService applyService;
+
     @Autowired
-    ApplyService applyService;
+    public ApplyController(ApplyService applyService) {
+        this.applyService = applyService;
+    }
 
     @ApiOperation(value = "申请参加出游活动")
     @ApiImplicitParams({

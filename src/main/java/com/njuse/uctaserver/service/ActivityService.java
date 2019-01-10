@@ -17,6 +17,9 @@ public interface ActivityService {
 
     public List<Activity> getAll();
 
+    public List<Activity> getAllAuditing();
+
     public List<Activity> getAll(String userId);
 
+    HttpStatus audit(String id, int res);
 }

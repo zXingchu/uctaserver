@@ -36,6 +36,8 @@ public class Activity implements Serializable {
 
     private String description;
 
+    private String place;
+
     private int number;
 
     private int partNumber;

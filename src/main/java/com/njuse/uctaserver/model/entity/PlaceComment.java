@@ -25,6 +25,6 @@ public class PlaceComment implements Serializable {
 
     private String description;
 
-    private int score;
+    private double score;
 
 }

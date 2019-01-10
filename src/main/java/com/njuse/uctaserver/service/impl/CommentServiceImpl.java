@@ -15,11 +15,15 @@ import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    @Autowired
-    OrgCommentRepo orgCommentRepo;
+    private final OrgCommentRepo orgCommentRepo;
+
+    private final PlaceCommentRepo placeCommentRepo;
 
     @Autowired
-    PlaceCommentRepo placeCommentRepo;
+    public CommentServiceImpl(OrgCommentRepo orgCommentRepo, PlaceCommentRepo placeCommentRepo) {
+        this.orgCommentRepo = orgCommentRepo;
+        this.placeCommentRepo = placeCommentRepo;
+    }
 
     @Override
     public List<OrgComment> getAllByActId(String actId) {
@@ -54,12 +58,28 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public int getScoreByActId(String actId) {
-        return 0;
+    public double getScoreByActId(String actId) {
+        double score = 0;
+        List<OrgComment> orgComments = orgCommentRepo.findAllByActId(actId);
+        if (orgComments.isEmpty())
+            return -1;
+        for (OrgComment orgComment : orgComments) {
+            score += orgComment.getScore();
+        }
+        score = score / orgComments.size();
+        return score;
     }
 
     @Override
-    public int getScoreByPlace(String place) {
-        return 0;
+    public double getScoreByPlace(String place) {
+        double score = 0;
+        List<PlaceComment> placeComments = placeCommentRepo.findByPlace(place);
+        if (placeComments.isEmpty())
+            return -1;
+        for (PlaceComment placeComment : placeComments) {
+            score += placeComment.getScore();
+        }
+        score = score / placeComments.size();
+        return score;
     }
 }
