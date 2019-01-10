@@ -4,7 +4,6 @@ package com.njuse.uctaserver.model.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,7 +42,7 @@ public class Activity implements Serializable {
 
     private String ownerId;
 
-    private String auditstatus;
+    private String auditStatus;
 
     private String status;
 

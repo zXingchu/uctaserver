@@ -1,7 +1,9 @@
 package com.njuse.uctaserver.controller;
 
 import com.njuse.uctaserver.model.entity.PlaceComment;
+import com.njuse.uctaserver.service.CommentService;
 import io.swagger.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,49 +17,51 @@ import java.util.List;
 @RequestMapping("/comment/place/")
 public class PlaceCommentController {
 
+    @Autowired
+    CommentService commentService;
 
     @ApiOperation(value = "获取指定id地点的所有评论")
-    @ApiImplicitParam(name = "id", value = "地点id", required = true, dataType = "String", paramType = "path")
+    @ApiImplicitParam(name = "place", value = "地点名", required = true, dataType = "String", paramType = "path")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 420, message = "Method Failure"),
-            @ApiResponse(code = 204, message = "No Content")
+            @ApiResponse(code = 404, message = "Not FOUND")
     })
-    @GetMapping(value = "/activity/{id}")
+    @GetMapping(value = "/{place}")
     public @ResponseBody
-    ResponseEntity<List<PlaceComment>> getAllByUserId(@PathVariable String id) {
-        List<PlaceComment> placeComment = new ArrayList<PlaceComment>();
-        return new ResponseEntity<List<PlaceComment>>(placeComment, HttpStatus.OK);
+    ResponseEntity<List<PlaceComment>> getAllByUserId(@PathVariable String place) {
+        List<PlaceComment> placeComments = commentService.getAllByPlace(place);
+        HttpStatus resCode = placeComments.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+        return new ResponseEntity<>(placeComments, resCode);
     }
 
     @ApiOperation(value = "创建指定id地点的评论")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "地点id", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "place", value = "地点名", required = true, dataType = "String", paramType = "path"),
             @ApiImplicitParam(name = "placeComment", value = "地点评论详情实体类", required = true, dataType = "PlaceComment", paramType = "body")
     })
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created"),
-            @ApiResponse(code = 420, message = "Method Failure"),
+            @ApiResponse(code = 304, message = "Not Modified"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    @PostMapping(value = "/")
+    @PostMapping(value = "/{place}")
     public @ResponseBody
     ResponseEntity<String> create(@PathVariable String id, @RequestBody PlaceComment placeComment) {
-        return new ResponseEntity<String>("ok", HttpStatus.OK);
+        HttpStatus resCode = commentService.addCommentOnPlace(placeComment);
+        return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 
     @ApiOperation(value = "获取指定id地点的评分")
-    @ApiImplicitParam(name = "id", value = "地点id", required = true, dataType = "String", paramType = "path")
+    @ApiImplicitParam(name = "place", value = "地点名", required = true, dataType = "String", paramType = "path")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 420, message = "Method Failure"),
-            @ApiResponse(code = 204, message = "No Content")
+            @ApiResponse(code = 404, message = "Not FOUND")
     })
-    @GetMapping(value = "/activity/{id}/score")
+    @GetMapping(value = "/{id}/score")
     public @ResponseBody
-    ResponseEntity<Integer> getScore(@PathVariable String id) {
-        Integer placeComment = new Integer(10);
-        return new ResponseEntity<Integer>(placeComment, HttpStatus.OK);
+    ResponseEntity<Integer> getScore(@PathVariable String place) {
+        Integer placeComment = commentService.getScoreByPlace(place);
+        return new ResponseEntity<>(placeComment, HttpStatus.OK);
     }
 
 }

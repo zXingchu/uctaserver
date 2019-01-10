@@ -1,13 +1,14 @@
 package com.njuse.uctaserver.controller;
 
 import com.njuse.uctaserver.model.entity.OrgComment;
+import com.njuse.uctaserver.service.CommentService;
 import io.swagger.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Api(tags = "Organization Comment Controller")
@@ -15,19 +16,21 @@ import java.util.List;
 @RequestMapping("/comment/org/")
 public class OrgCommentController {
 
+    @Autowired
+    CommentService commentService;
 
     @ApiOperation(value = "获取指定id活动的所有评论")
     @ApiImplicitParam(name = "id", value = "活动id", required = true, dataType = "String", paramType = "path")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 420, message = "Method Failure"),
-            @ApiResponse(code = 204, message = "No Content")
+            @ApiResponse(code = 404, message = "Not FOUND")
     })
-    @GetMapping(value = "/activity/{id}")
+    @GetMapping(value = "/{id}")
     public @ResponseBody
     ResponseEntity<List<OrgComment>> getAllByUserId(@PathVariable String id) {
-        List<OrgComment> memberComment = new ArrayList<OrgComment>();
-        return new ResponseEntity<List<OrgComment>>(memberComment, HttpStatus.OK);
+        List<OrgComment> orgComments = commentService.getAllByActId(id);
+        HttpStatus resCode = orgComments.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+        return new ResponseEntity<>(orgComments, resCode);
     }
 
     @ApiOperation(value = "创建指定id活动的评论")
@@ -37,13 +40,14 @@ public class OrgCommentController {
     })
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created"),
-            @ApiResponse(code = 420, message = "Method Failure"),
+            @ApiResponse(code = 304, message = "Not Modified"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    @PostMapping(value = "/")
+    @PostMapping(value = "/{id}")
     public @ResponseBody
-    ResponseEntity<String> create(@PathVariable String id, @RequestBody OrgComment memberComment) {
-        return new ResponseEntity<String>("ok", HttpStatus.OK);
+    ResponseEntity<String> create(@PathVariable String id, @RequestBody OrgComment orgComment) {
+        HttpStatus resCode = commentService.addCommentOnOrg(orgComment);
+        return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 
 
@@ -51,14 +55,13 @@ public class OrgCommentController {
     @ApiImplicitParam(name = "id", value = "活动id", required = true, dataType = "String", paramType = "path")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 420, message = "Method Failure"),
-            @ApiResponse(code = 204, message = "No Content")
+            @ApiResponse(code = 404, message = "Not FOUND")
     })
-    @GetMapping(value = "/activity/{id}/score")
+    @GetMapping(value = "/{id}/score")
     public @ResponseBody
     ResponseEntity<Integer> getScore(@PathVariable String id) {
-        Integer memberComment = new Integer(10);
-        return new ResponseEntity<Integer>(memberComment, HttpStatus.OK);
+        int memberComment = commentService.getScoreByActId(id);
+        return new ResponseEntity<>(memberComment, HttpStatus.OK);
     }
 
 }

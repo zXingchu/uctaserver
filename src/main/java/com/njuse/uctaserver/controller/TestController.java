@@ -17,7 +17,7 @@ public class TestController {
     @ApiOperation(value = "测试api")
     @GetMapping(value = "/isSuccess")
     public @ResponseBody  ResponseEntity<String> isSuccess(HttpServletRequest request) {
-        return new ResponseEntity<String>("Success", HttpStatus.OK);
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
 }
