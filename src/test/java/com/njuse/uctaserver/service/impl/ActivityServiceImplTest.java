@@ -1,8 +1,8 @@
 package com.njuse.uctaserver.service.impl;
 
 import com.njuse.uctaserver.model.entity.Activity;
-import com.njuse.uctaserver.model.repo.ActivityRepo;
 import com.njuse.uctaserver.service.ActivityService;
+import com.njuse.uctaserver.until.AuditStatus;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -16,7 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(SpringRunner.class)
@@ -66,26 +67,69 @@ public class ActivityServiceImplTest {
         Activity activity2 = activityService.get(testId);
         String testStr = "测试通过";
         activity2.setStatus(testStr);
+        activity2.setAuditStatus(AuditStatus.ACCEPT.getName());
         activityService.update(activity2);
         Activity activity3 = activityService.get(testId);
         assertEquals(testStr, activity3.getStatus());
+        List<Activity> activities = activityService.getAll();
+        assertTrue(activities.size() > 0);
+
+        Activity activity1 = new Activity();
+        activity1.setId("张文卿");
+        HttpStatus httpStatus = activityService.update(activity1);
+        assertEquals(HttpStatus.NOT_FOUND.value(), httpStatus.value());
+
+
+
+        Activity activityReject = activityService.get(testId);
+        String testStr2 = "测试未通过";
+        activityReject.setStatus(testStr2);
+        activityReject.setAuditStatus(AuditStatus.REJECT.getName());
+        activityService.update(activityReject);
+        Activity activityR = activityService.get(testId);
+        assertEquals(testStr2, activityR.getStatus());
+
+        Activity activityAudit = activityService.get(testId);
+        String testStr1 = "测试中";
+        activityAudit.setStatus(testStr1);
+        activityAudit.setAuditStatus(AuditStatus.AUDIT.getName());
+        activityService.update(activityAudit);
+        Activity activityA = activityService.get(testId);
+        assertEquals(testStr1, activityA.getStatus());
+
     }
 
     @Test
     public void test_02_get() {
         Activity activity2 = activityService.get(testId);
         assertEquals(activity.getName(), activity2.getName());
+        Activity activity3 = activityService.get("ss");
+       assertEquals(null,activity3);
     }
 
-    @Test
-    public void test_04_getAll() {
-        List<Activity> activities = activityService.getAll();
-        assertTrue(activities.size() > 0);
-    }
+
 
     @Test
     public void test_05_getAll1() {
-        List<Activity> activities = activityService.getAll(testUserId);
+        List<Activity> activities = activityService.getAllByUserId(testUserId);
+        assertTrue(activities.size()==0);
+    }
+    @Test
+    public void test_06_getAllAuditing() {
+        List<Activity> activities = activityService.getAllAuditing();
         assertTrue(activities.size() > 0);
     }
+
+    @Test
+    public void test_07_getAllAuditing() {
+        List<Activity> activities = activityService.getAllAuditing();
+        assertTrue(activities.size() > 0);
+    }
+
+    @Test
+    public void test_08_getHttpStatus() {
+        assertEquals(HttpStatus.NOT_FOUND.value(),activityService.audit("sa",2).value());
+        assertEquals(HttpStatus.NOT_ACCEPTABLE.value(),activityService.audit(testId,2).value());
+    }
+
 }
