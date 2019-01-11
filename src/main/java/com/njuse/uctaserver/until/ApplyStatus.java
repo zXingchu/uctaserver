@@ -1,5 +1,8 @@
 package com.njuse.uctaserver.until;
 
+import lombok.Getter;
+
+@Getter
 public enum ApplyStatus {
 
     APPLY("申请中", 2), ACCEPT("已通过", 0), REJECT("已拒绝", 1);
@@ -13,28 +16,11 @@ public enum ApplyStatus {
     }
 
     public static String getName(int index) {
-        for (ApplyStatus c : ApplyStatus.values()) {
-            if (c.getIndex() == index) {
-                return c.name;
+        for (ApplyStatus as : ApplyStatus.values()) {
+            if (as.getIndex() == index) {
+                return as.name;
             }
         }
         return null;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
-
 }

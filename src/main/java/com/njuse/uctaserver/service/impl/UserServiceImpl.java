@@ -20,8 +20,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User get(String id) {
-        if(!userRepo.existsById(id))
+        if(!userRepo.existsById(id)) {
             return null;
+        }
         return userRepo.getOne(id);
     }
 

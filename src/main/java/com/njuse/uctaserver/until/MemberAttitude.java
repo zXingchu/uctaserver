@@ -1,5 +1,8 @@
 package com.njuse.uctaserver.until;
 
+import lombok.Getter;
+
+@Getter
 public enum MemberAttitude {
 
 
@@ -20,22 +23,6 @@ public enum MemberAttitude {
             }
         }
         return null;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
     }
 
 }

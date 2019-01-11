@@ -58,11 +58,11 @@ public class UserController {
     @GetMapping(value = "/{id}")
     public @ResponseBody
     ResponseEntity<User> get(@PathVariable String id) {
-        User activity = userService.get(id);
+        User user = userService.get(id);
         HttpStatus resCode = HttpStatus.OK;
-        if (activity == null)
+        if (user == null)
             resCode = HttpStatus.NOT_FOUND;
-        return new ResponseEntity<>(activity, resCode);
+        return new ResponseEntity<>(user, resCode);
     }
 
     @ApiOperation(value = "评价用户点赞或点踩")

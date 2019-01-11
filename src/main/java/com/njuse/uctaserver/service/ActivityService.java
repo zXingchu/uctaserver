@@ -1,25 +1,31 @@
 package com.njuse.uctaserver.service;
 
 import com.njuse.uctaserver.model.entity.Activity;
+import com.njuse.uctaserver.model.entity.User;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
 public interface ActivityService {
 
-    public HttpStatus add(Activity activity);
+    HttpStatus add(Activity activity);
 
-    public HttpStatus delete(String id);
+    HttpStatus delete(String id);
 
-    public HttpStatus update(Activity activity);
+    HttpStatus update(Activity activity);
 
-    public Activity get(String id);
+    Activity get(String id);
 
-    public List<Activity> getAll();
+    List<Activity> getAll();
 
-    public List<Activity> getAllAuditing();
+    List<Activity> getAllAuditing();
 
-    public List<Activity> getAll(String userId);
+    List<Activity> getAllByUserId(String userId);
 
     HttpStatus audit(String id, int res);
+
+    List<User> getUsersPartInAct(String actId);
+
+    List<Activity> getAll(String hh);
+
 }

@@ -1,5 +1,8 @@
 package com.njuse.uctaserver.until;
 
+import lombok.Getter;
+
+@Getter
 public enum ActivityStatus {
 
     BEFORE_ACT("未开始", -1), IN_ACT("活动中", 0), AFTER_ACT("已结束", 1);
@@ -13,28 +16,12 @@ public enum ActivityStatus {
     }
 
     public static String getName(int index) {
-        for (ActivityStatus c : ActivityStatus.values()) {
-            if (c.getIndex() == index) {
-                return c.name;
+        for (ActivityStatus as : ActivityStatus.values()) {
+            if (as.getIndex() == index) {
+                return as.name;
             }
         }
         return null;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
     }
 
 }

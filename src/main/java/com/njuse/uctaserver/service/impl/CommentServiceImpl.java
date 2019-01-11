@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -28,13 +29,13 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<OrgComment> getAllByActId(String actId) {
         List<OrgComment> orgComments = orgCommentRepo.findAllByActId(actId);
-        return orgComments.isEmpty() ? null : orgComments;
+        return orgComments.isEmpty() ? Collections.emptyList() : orgComments;
     }
 
     @Override
     public List<PlaceComment> getAllByPlace(String place) {
         List<PlaceComment> placeComments = placeCommentRepo.findByPlace(place);
-        return placeComments.isEmpty() ? null : placeComments;
+        return placeComments.isEmpty() ? Collections.emptyList() : placeComments;
     }
 
     @Override

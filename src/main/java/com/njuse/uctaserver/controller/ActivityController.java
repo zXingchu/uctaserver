@@ -1,6 +1,7 @@
 package com.njuse.uctaserver.controller;
 
 import com.njuse.uctaserver.model.entity.Activity;
+import com.njuse.uctaserver.model.entity.User;
 import com.njuse.uctaserver.service.ActivityService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,10 +121,22 @@ public class ActivityController {
     public @ResponseBody
     ResponseEntity<Activity> get(@PathVariable String id) {
         Activity activity = activityService.get(id);
-        HttpStatus resCode = HttpStatus.OK;
-        if (activity == null)
-            resCode = HttpStatus.NOT_FOUND;
+        HttpStatus resCode = activity == null ? HttpStatus.NOT_FOUND : HttpStatus.OK;
         return new ResponseEntity<>(activity, resCode);
+    }
+
+    @ApiOperation(value = "获取指定id出游活动的参与用户")
+    @ApiImplicitParam(name = "id", value = "出游活动id", required = true, dataType = "String", paramType = "path")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @GetMapping(value = "/{id}/users")
+    public @ResponseBody
+    ResponseEntity<List<User>> getUsers(@PathVariable String id) {
+        List<User> users = activityService.getUsersPartInAct(id);
+        HttpStatus resCode = users.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+        return new ResponseEntity<>(users, resCode);
     }
 
 
@@ -139,10 +152,8 @@ public class ActivityController {
     @GetMapping(value = "/user/{id}")
     public @ResponseBody
     ResponseEntity<List<Activity>> getAllByUserId(@PathVariable String id, @RequestParam(value = "param1", required = true) String param1) {
-        List<Activity> activities = activityService.getAll(id);
-        HttpStatus resCode = HttpStatus.OK;
-        if (activities == null)
-            resCode = HttpStatus.NOT_FOUND;
+        List<Activity> activities = activityService.getAllByUserId(id);
+        HttpStatus resCode = activities.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
         return new ResponseEntity<>(activities, resCode);
     }
 
@@ -155,9 +166,7 @@ public class ActivityController {
     public @ResponseBody
     ResponseEntity<List<Activity>> getAllAuditing() {
         List<Activity> activities = activityService.getAllAuditing();
-        HttpStatus resCode = HttpStatus.OK;
-        if (activities == null)
-            resCode = HttpStatus.NOT_FOUND;
+        HttpStatus resCode = activities.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
         return new ResponseEntity<>(activities, resCode);
     }
 
