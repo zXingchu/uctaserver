@@ -17,6 +17,10 @@ public class User implements Serializable {
     @Id
     private String id;
 
+    private String name;
+
+    private int age;
+
     private int likeNum;
 
     private int treadNum;

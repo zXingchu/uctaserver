@@ -140,7 +140,10 @@ public class ActivityController {
     public @ResponseBody
     ResponseEntity<List<Activity>> getAllByUserId(@PathVariable String id, @RequestParam(value = "param1", required = true) String param1) {
         List<Activity> activities = activityService.getAll(id);
-        return new ResponseEntity<>(activities, HttpStatus.OK);
+        HttpStatus resCode = HttpStatus.OK;
+        if (activities == null)
+            resCode = HttpStatus.NOT_FOUND;
+        return new ResponseEntity<>(activities, resCode);
     }
 
     @ApiOperation(value = "获取所有审核中的活动")
@@ -152,7 +155,10 @@ public class ActivityController {
     public @ResponseBody
     ResponseEntity<List<Activity>> getAllAuditing() {
         List<Activity> activities = activityService.getAllAuditing();
-        return new ResponseEntity<>(activities, HttpStatus.OK);
+        HttpStatus resCode = HttpStatus.OK;
+        if (activities == null)
+            resCode = HttpStatus.NOT_FOUND;
+        return new ResponseEntity<>(activities, resCode);
     }
 
 }
