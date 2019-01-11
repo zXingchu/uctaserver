@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.njuse.uctaserver.until.ActivityStatus;
 import com.njuse.uctaserver.until.AuditStatus;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +18,8 @@ import java.util.Date;
 
 @Data
 @Entity(name = "activity")
+@AllArgsConstructor
+@NoArgsConstructor
 @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler"})
 public class Activity implements Serializable {

@@ -102,15 +102,8 @@ public class ActivityServiceImpl implements ActivityService {
         if (!userRepo.existsById(userId)) {
             return Collections.emptyList();
         }
-//        List<EntryApplication> entryApplications = entryApplicationRepo.findAllByUserId(userId);
-//        List<Activity> activities = activityRepo.findAllByOwnerId(userId);
-//        for (EntryApplication entryApplication : entryApplications) {
-//            if (activityRepo.existsById(entryApplication.getActId()))
-//                activities.add(activityRepo.getOne(entryApplication.getActId()));
-//        }
-//        List<Activity> activities = actMemberRepo.getAllActByUserId(userId);
-//        return activities.isEmpty() ? Collections.emptyList() : activities;
-        return Collections.emptyList();
+        List<Activity> activities = actMemberRepo.getAllActByUserId(userId);
+        return activities.isEmpty() ? Collections.emptyList() : activities;
     }
 
     @Override
