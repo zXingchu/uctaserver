@@ -22,7 +22,7 @@ public class Activity implements Serializable {
 
     @Id
     @GeneratedValue(generator = "jpa-uuid")
-    @Column(length = 28)
+    @Column(length = 32)
     private String id;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")

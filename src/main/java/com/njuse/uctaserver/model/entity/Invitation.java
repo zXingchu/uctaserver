@@ -2,7 +2,6 @@ package com.njuse.uctaserver.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.njuse.uctaserver.until.ApplyStatus;
 import com.njuse.uctaserver.until.InvitationStatus;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -21,7 +20,7 @@ public class Invitation {
 
     @Id
     @GeneratedValue(generator = "jpa-uuid")
-    @Column(length = 28)
+    @Column(length = 32)
     private String id;
 
     private String actId;

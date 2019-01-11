@@ -18,7 +18,7 @@ public class PlaceComment implements Serializable {
 
     @Id
     @GeneratedValue(generator = "jpa-uuid")
-    @Column(length = 28)
+    @Column(length = 32)
     private String id;
 
     private String place;

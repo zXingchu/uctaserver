@@ -46,8 +46,9 @@ public class ActMemberServiceImpl implements ActMemberService {
         if (!activityRepo.existsById(actId)) {
             return Collections.emptyList();
         }
-        List<User> users = actMemberRepo.getUsersPartInAct(actId);
-        return users.isEmpty() ? Collections.emptyList() : users;
+//        List<User> users = actMemberRepo.getUsersPartInAct(actId);
+//        return users.isEmpty() ? Collections.emptyList() : users;
+        return Collections.emptyList();
     }
 
 }

@@ -79,7 +79,8 @@ public class ActivityServiceImplTest {
         assertTrue(activities.size() > 0);
         Activity activity1 = new Activity();
         activity1.setId("张文卿");
-//        HttpStatus httpStatus = activityService.update(activity1);
+		ActivityDTO activityDTO1=new ActivityDTO();
+//		  HttpStatus httpStatus = activityService.update(activity1);
 //        assertEquals(HttpStatus.NOT_FOUND.value(), httpStatus.value());
 
 

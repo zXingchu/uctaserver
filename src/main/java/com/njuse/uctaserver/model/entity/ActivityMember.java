@@ -9,14 +9,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Data
-@Entity(name = "activity")
+@Entity(name = "activity_member")
 @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler"})
 public class ActivityMember {
 
     @Id
     @GeneratedValue(generator = "jpa-uuid")
-    @Column(length = 28)
+    @Column(length = 32)
     private String id;
 
     private String actId;

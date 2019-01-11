@@ -2,7 +2,6 @@ package com.njuse.uctaserver.service.impl;
 
 import com.njuse.uctaserver.dto.ActivityDTO;
 import com.njuse.uctaserver.model.entity.Activity;
-import com.njuse.uctaserver.model.entity.User;
 import com.njuse.uctaserver.model.repo.ActMemberRepo;
 import com.njuse.uctaserver.model.repo.ActivityRepo;
 import com.njuse.uctaserver.model.repo.UserRepo;
@@ -109,8 +108,9 @@ public class ActivityServiceImpl implements ActivityService {
 //            if (activityRepo.existsById(entryApplication.getActId()))
 //                activities.add(activityRepo.getOne(entryApplication.getActId()));
 //        }
-        List<Activity> activities = actMemberRepo.getAllActByUserId(userId);
-        return activities.isEmpty() ? Collections.emptyList() : activities;
+//        List<Activity> activities = actMemberRepo.getAllActByUserId(userId);
+//        return activities.isEmpty() ? Collections.emptyList() : activities;
+        return Collections.emptyList();
     }
 
     @Override
