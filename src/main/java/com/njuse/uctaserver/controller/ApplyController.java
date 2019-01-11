@@ -1,8 +1,10 @@
 package com.njuse.uctaserver.controller;
 
+import com.njuse.uctaserver.dto.EntryApplicationDTO;
 import com.njuse.uctaserver.model.entity.EntryApplication;
 import com.njuse.uctaserver.service.ApplyService;
 import io.swagger.annotations.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ public class ApplyController {
     @ApiOperation(value = "申请参加出游活动")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "出游活动id", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "application", value = "申请参加详情实体类", required = true, dataType = "EntryApplication", paramType = "body")
+            @ApiImplicitParam(name = "applicationDTO", value = "申请参加详情DTO类", required = true, dataType = "EntryApplicationDTO", paramType = "body")
     })
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created"),
@@ -35,7 +37,9 @@ public class ApplyController {
     })
     @PostMapping(value = "/activities/{id}")
     public @ResponseBody
-    ResponseEntity<String> joinActivity(@PathVariable String id, @RequestBody EntryApplication application) {
+    ResponseEntity<String> joinActivity(@PathVariable String id, @RequestBody EntryApplicationDTO applicationDTO) {
+        EntryApplication application = new EntryApplication();
+        BeanUtils.copyProperties(applicationDTO, application);
         HttpStatus resCode = applyService.add(application);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
@@ -57,7 +61,7 @@ public class ApplyController {
     @ApiOperation(value = "操作申请结果")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "申请id", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "res", value = "申请结果0：accept|1:reject", required = true, dataType = "int", paramType = "path")
+            @ApiImplicitParam(name = "res", value = "申请结果1：accept|-1:reject", required = true, dataType = "int", paramType = "path")
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),

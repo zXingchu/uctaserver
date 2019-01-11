@@ -1,8 +1,10 @@
 package com.njuse.uctaserver.controller;
 
+import com.njuse.uctaserver.dto.PlaceCommentDTO;
 import com.njuse.uctaserver.model.entity.PlaceComment;
 import com.njuse.uctaserver.service.CommentService;
 import io.swagger.annotations.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +42,7 @@ public class PlaceCommentController {
     @ApiOperation(value = "创建指定id地点的评论")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "place", value = "地点名", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "placeComment", value = "地点评论详情实体类", required = true, dataType = "PlaceComment", paramType = "body")
+            @ApiImplicitParam(name = "placeCommentDTO", value = "地点评论详情DTO类", required = true, dataType = "PlaceCommentDTO", paramType = "body")
     })
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created"),
@@ -49,7 +51,9 @@ public class PlaceCommentController {
     })
     @PostMapping(value = "/{place}")
     public @ResponseBody
-    ResponseEntity<String> create(@PathVariable String id, @RequestBody PlaceComment placeComment) {
+    ResponseEntity<String> create(@PathVariable String id, @RequestBody PlaceCommentDTO placeCommentDTO) {
+        PlaceComment placeComment = new PlaceComment();
+        BeanUtils.copyProperties(placeCommentDTO, placeComment);
         HttpStatus resCode = commentService.addCommentOnPlace(placeComment);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }

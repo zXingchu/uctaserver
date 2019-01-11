@@ -16,5 +16,5 @@ public interface ApplyService {
 
     List<EntryApplication> getAllByActivity(String actId);
 
-    HttpStatus isPermit(String id, int res);
+    HttpStatus isPermit(String id, int resCode);
 }

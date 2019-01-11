@@ -1,9 +1,11 @@
 package com.njuse.uctaserver.controller;
 
+import com.njuse.uctaserver.dto.ActivityDTO;
 import com.njuse.uctaserver.model.entity.Activity;
 import com.njuse.uctaserver.model.entity.User;
 import com.njuse.uctaserver.service.ActivityService;
 import io.swagger.annotations.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +49,7 @@ public class ActivityController {
     }
 
     @ApiOperation(value = "创建出游活动")
-    @ApiImplicitParam(name = "activity", value = "出游活动详情实体类", required = true, dataType = "Activity", paramType = "body")
+    @ApiImplicitParam(name = "activityDTO", value = "出游活动详情实体类", required = true, dataType = "ActivityDTO", paramType = "body")
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 304, message = "Not Modified"),
@@ -55,7 +57,9 @@ public class ActivityController {
     })
     @PostMapping(value = "/")
     public @ResponseBody
-    ResponseEntity<String> create(@RequestBody Activity activity) {
+    ResponseEntity<String> create(@RequestBody ActivityDTO activityDTO) {
+        Activity activity = new Activity();
+        BeanUtils.copyProperties(activityDTO, activity);
         HttpStatus resCode = activityService.add(activity);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
@@ -77,7 +81,7 @@ public class ActivityController {
     @ApiOperation(value = "更新指定id出游活动")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "出游活动id", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "activity", value = "出游活动详情实体类", required = true, dataType = "Activity", paramType = "body")
+            @ApiImplicitParam(name = "activityDTO", value = "出游活动详情实体类", required = true, dataType = "ActivityDTO", paramType = "body")
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
@@ -88,15 +92,15 @@ public class ActivityController {
     })
     @PostMapping(value = "/{id}")
     public @ResponseBody
-    ResponseEntity<String> update(@PathVariable String id, @RequestBody Activity activity) {
-        HttpStatus resCode = activityService.update(activity);
+    ResponseEntity<String> update(@PathVariable String id, @RequestBody ActivityDTO activityDTO) {
+        HttpStatus resCode = activityService.update(activityDTO);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 
     @ApiOperation(value = "审核指定id出游活动")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "出游活动id", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "res", value = "申请结果0：accept|1:reject", required = true, dataType = "int", paramType = "path")
+            @ApiImplicitParam(name = "res", value = "申请结果1：accept|-1:reject", required = true, dataType = "int", paramType = "path")
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
@@ -125,20 +129,6 @@ public class ActivityController {
         return new ResponseEntity<>(activity, resCode);
     }
 
-    @ApiOperation(value = "获取指定id出游活动的参与用户")
-    @ApiImplicitParam(name = "id", value = "出游活动id", required = true, dataType = "String", paramType = "path")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 404, message = "Not Found")
-    })
-    @GetMapping(value = "/{id}/users")
-    public @ResponseBody
-    ResponseEntity<List<User>> getUsers(@PathVariable String id) {
-        List<User> users = activityService.getUsersPartInAct(id);
-        HttpStatus resCode = users.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
-        return new ResponseEntity<>(users, resCode);
-    }
-
 
     @ApiOperation(value = "获取当前用户参与的所有活动")
     @ApiImplicitParams({
@@ -153,6 +143,20 @@ public class ActivityController {
     public @ResponseBody
     ResponseEntity<List<Activity>> getAllByUserId(@PathVariable String id, @RequestParam(value = "param1", required = true) String param1) {
         List<Activity> activities = activityService.getAllByUserId(id);
+        HttpStatus resCode = activities.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+        return new ResponseEntity<>(activities, resCode);
+    }
+
+    @ApiOperation(value = "获取指定name的所有活动")
+    @ApiImplicitParam(name = "name", value = "名称", required = true, dataType = "String", paramType = "path")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @GetMapping(value = "/name/{name}")
+    public @ResponseBody
+    ResponseEntity<List<Activity>> getAllByActName(@PathVariable String name) {
+        List<Activity> activities = activityService.getAllByName(name);
         HttpStatus resCode = activities.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
         return new ResponseEntity<>(activities, resCode);
     }

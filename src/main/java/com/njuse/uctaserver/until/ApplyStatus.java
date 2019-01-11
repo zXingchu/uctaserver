@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ApplyStatus {
 
-    APPLY("申请中", 2), ACCEPT("已通过", 0), REJECT("已拒绝", 1);
+    APPLY("申请中", 0), ACCEPT("已通过", 1), REJECT("已拒绝", -1);
 
     private String name;
     private int index;
@@ -23,4 +23,14 @@ public enum ApplyStatus {
         }
         return null;
     }
+
+    public static int getIndex(String name) {
+        for (ApplyStatus as : ApplyStatus.values()) {
+            if (as.getName() == name) {
+                return as.index;
+            }
+        }
+        return 250;
+    }
+
 }

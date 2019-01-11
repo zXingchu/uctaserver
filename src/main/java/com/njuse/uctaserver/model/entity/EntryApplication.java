@@ -2,6 +2,7 @@ package com.njuse.uctaserver.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.njuse.uctaserver.until.ApplyStatus;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -20,7 +21,7 @@ public class EntryApplication implements Serializable {
 
     @Id
     @GeneratedValue(generator = "jpa-uuid")
-    @Column(length = 32)
+    @Column(length = 28)
     private String id;
 
     private String actId;
@@ -28,10 +29,10 @@ public class EntryApplication implements Serializable {
     private String userId;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
-    private Date time;
+    private Date time = new Date();
 
     private String description;
 
-    private String status;
+    private String status = ApplyStatus.APPLY.getName();
 
 }

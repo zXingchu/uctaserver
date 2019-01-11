@@ -1,8 +1,10 @@
 package com.njuse.uctaserver.controller;
 
+import com.njuse.uctaserver.dto.OrgCommentDTO;
 import com.njuse.uctaserver.model.entity.OrgComment;
 import com.njuse.uctaserver.service.CommentService;
 import io.swagger.annotations.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +42,7 @@ public class OrgCommentController {
     @ApiOperation(value = "创建指定id活动的评论")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "活动id", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "memberComment", value = "组织评论详情实体类", required = true, dataType = "OrgComment", paramType = "body")
+            @ApiImplicitParam(name = "orgCommentDTO", value = "组织评论详情DTO类", required = true, dataType = "OrgCommentDTO", paramType = "body")
     })
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created"),
@@ -49,7 +51,9 @@ public class OrgCommentController {
     })
     @PostMapping(value = "/{id}")
     public @ResponseBody
-    ResponseEntity<String> create(@PathVariable String id, @RequestBody OrgComment orgComment) {
+    ResponseEntity<String> create(@PathVariable String id, @RequestBody OrgCommentDTO orgCommentDTO) {
+        OrgComment orgComment = new OrgComment();
+        BeanUtils.copyProperties(orgCommentDTO, orgComment);
         HttpStatus resCode = commentService.addCommentOnOrg(orgComment);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }

@@ -1,6 +1,9 @@
 package com.njuse.uctaserver.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.njuse.uctaserver.until.ApplyStatus;
+import com.njuse.uctaserver.until.InvitationStatus;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -8,23 +11,30 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.io.Serializable;
+import java.util.Date;
 
 @Data
-@Entity(name = "place_comment")
+@Entity(name = "invitation")
 @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler"})
-public class PlaceComment implements Serializable {
+public class Invitation {
 
     @Id
     @GeneratedValue(generator = "jpa-uuid")
     @Column(length = 28)
     private String id;
 
-    private String place;
+    private String actId;
 
-    private String description;
+    private String userId;
 
-    private double score;
+    private String inviterId;
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    private Date time = new Date();
+
+//    private String description;
+
+    private String status = InvitationStatus.INVITE.getName();
 
 }

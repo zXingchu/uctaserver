@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum MemberAttitude {
 
 
-    LIKE("点赞", 0), THREAD("点踩", 1), 哈哈("已拒绝", 1);
+    LIKE("点赞", 0), THREAD("点踩", 1);
 
     private String name;
     private int index;
