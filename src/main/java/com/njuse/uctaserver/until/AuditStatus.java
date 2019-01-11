@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public enum AuditStatus {
 
-    AUDIT("审核中", 2), ACCEPT("已通过", 0), REJECT("已拒绝", 1);
+    AUDIT("审核中", 0), ACCEPT("已通过", 1), REJECT("已拒绝", -1);
 
     private String name;
     private int index;

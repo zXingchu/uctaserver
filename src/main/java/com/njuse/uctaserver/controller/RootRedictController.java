@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RootRedictController {
 
     @GetMapping(value = "/")
-    public String rootRedict() throws Exception {
+    public String rootRedict(){
         return "redirect:/swagger-ui.html";
     }
 

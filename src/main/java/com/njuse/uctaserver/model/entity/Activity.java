@@ -3,6 +3,8 @@ package com.njuse.uctaserver.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.njuse.uctaserver.until.ActivityStatus;
+import com.njuse.uctaserver.until.AuditStatus;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.Column;
@@ -20,11 +22,11 @@ public class Activity implements Serializable {
 
     @Id
     @GeneratedValue(generator = "jpa-uuid")
-    @Column(length = 32)
+    @Column(length = 28)
     private String id;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
-    private Date createTime;
+    private Date createTime = new Date();
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date startTime;
@@ -44,8 +46,8 @@ public class Activity implements Serializable {
 
     private String ownerId;
 
-    private String auditStatus;
+    private String auditStatus = AuditStatus.AUDIT.getName();
 
-    private String status;
+    private String status = ActivityStatus.BEFORE_ACT.getName();
 
 }

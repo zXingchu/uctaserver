@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -29,7 +30,6 @@ public class ApplyServiceImpl implements ApplyService {
 
     @Override
     public HttpStatus add(EntryApplication entryApplication) {
-        entryApplication.setStatus(ApplyStatus.APPLY.getName());
         entryApplicationRepo.save(entryApplication);
         String id = entryApplication.getId();
         if (id != null) {
@@ -68,18 +68,21 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
-    public HttpStatus isPermit(String id, int res) {
+    public HttpStatus isPermit(String id, int resCode) {
         if (!entryApplicationRepo.existsById(id))
             return HttpStatus.NOT_FOUND;
         EntryApplication entryApplication = entryApplicationRepo.getOne(id);
         Activity activity = activityRepo.getOne(entryApplication.getActId());
-        if (activity.getPartNumber() < activity.getNumber()) {
+        int oldStatus = ApplyStatus.getIndex(entryApplication.getStatus());
+        Boolean statement = Objects.requireNonNull(ApplyStatus.getName(resCode)).equals(entryApplication.getStatus());
+        statement = statement || activity.getNumber() >= activity.getPartNumber() && resCode == ApplyStatus.ACCEPT.getIndex();
+        if (statement)
+            return HttpStatus.NOT_MODIFIED;
+        if (oldStatus != ApplyStatus.APPLY.getIndex())
             activity.setPartNumber(activity.getPartNumber() + 1);
-            activityRepo.save(activity);
-            entryApplication.setStatus(ApplyStatus.getName(res));
-            entryApplicationRepo.save(entryApplication);
-            return HttpStatus.OK;
-        }
-        return HttpStatus.NOT_ACCEPTABLE;
+        entryApplication.setStatus(ApplyStatus.getName(resCode));
+        activityRepo.save(activity);
+        entryApplicationRepo.save(entryApplication);
+        return HttpStatus.OK;
     }
 }

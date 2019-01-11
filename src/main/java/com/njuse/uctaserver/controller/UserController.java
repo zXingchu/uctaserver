@@ -1,15 +1,16 @@
 package com.njuse.uctaserver.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.njuse.uctaserver.config.MicroProgram;
+import com.njuse.uctaserver.dto.UserDTO;
 import com.njuse.uctaserver.model.entity.User;
 import com.njuse.uctaserver.service.UserService;
-import com.njuse.uctaserver.until.MemberAttitude;
 import io.swagger.annotations.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,15 +19,14 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
+@Api(tags = "User Controller")
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
-    final
-    UserService userService;
+    private final UserService userService;
 
-    final
-    MicroProgram microProgram;
+    private final MicroProgram microProgram;
 
     @Autowired
     public UserController(UserService userService, MicroProgram microProgram) {
@@ -34,7 +34,7 @@ public class UserController {
         this.microProgram = microProgram;
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.GET)
+    @GetMapping(value = "/login")
     public @ResponseBody
     String tryLogin(HttpServletRequest request){
         String jscode = request.getParameter("code");
@@ -43,7 +43,7 @@ public class UserController {
         JSONObject jo = JSONObject.parseObject(re.getBody());
         HttpSession session = request.getSession();
         session.setAttribute("session_key",jo.get("session_key"));
-        Map<String,String> resultmap = new HashMap<String,String>();
+        Map<String,String> resultmap = new HashMap<>();
         resultmap.put("openid",jo.get("openid").toString());
         resultmap.put("sessionid",session.getId());
         return jo.get("openid").toString();
@@ -59,9 +59,7 @@ public class UserController {
     public @ResponseBody
     ResponseEntity<User> get(@PathVariable String id) {
         User user = userService.get(id);
-        HttpStatus resCode = HttpStatus.OK;
-        if (user == null)
-            resCode = HttpStatus.NOT_FOUND;
+        HttpStatus resCode = user == null ? HttpStatus.NOT_FOUND : HttpStatus.OK;
         return new ResponseEntity<>(user, resCode);
     }
 
@@ -80,6 +78,22 @@ public class UserController {
     public @ResponseBody
     ResponseEntity<String> audit(@PathVariable String id, @RequestBody int maCode) {
         HttpStatus resCode = userService.likeOrThread(id, maCode);
+        return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
+    }
+
+    @ApiOperation(value = "创建用户信息")
+    @ApiImplicitParam(name = "userDTO", value = "用户详情DTO类", required = true, dataType = "UserDTO", paramType = "body")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 304, message = "Not Modified"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @PostMapping(value = "/")
+    public @ResponseBody
+    ResponseEntity<String> create(@RequestBody UserDTO userDTO) {
+        User user = new User();
+        BeanUtils.copyProperties(userDTO, user);
+        HttpStatus resCode = userService.add(user);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 

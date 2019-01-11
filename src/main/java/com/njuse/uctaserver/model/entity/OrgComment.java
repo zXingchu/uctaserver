@@ -18,7 +18,7 @@ public class OrgComment implements Serializable {
 
     @Id
     @GeneratedValue(generator = "jpa-uuid")
-    @Column(length = 32)
+    @Column(length = 28)
     private String id;
 
     private String description;
