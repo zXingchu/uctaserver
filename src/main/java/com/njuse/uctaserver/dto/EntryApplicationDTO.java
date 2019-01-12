@@ -14,11 +14,6 @@ public class EntryApplicationDTO implements Serializable {
 
     private String userId;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
-    private Date time;
-
     private String description;
-
-    private String status;
 
 }

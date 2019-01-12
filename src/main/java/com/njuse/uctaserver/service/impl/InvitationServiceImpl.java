@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -47,8 +49,16 @@ public class InvitationServiceImpl implements InvitationService{
     }
 
     @Override
-    public HttpStatus respond(String id, int resCode) {
+    public HttpStatus add(Invitation invitation) {
+        Activity activity = activityRepo.getOne(invitation.getActId());
+        if(!activity.getOwnerId().equals(invitation.getInviterId()))
+            return HttpStatus.UNAUTHORIZED;
+        invitationRepo.save(invitation);
+        return HttpStatus.OK;
+    }
 
+    @Override
+    public HttpStatus respond(String id, int resCode) {
         if (!invitationRepo.existsById(id))
             return HttpStatus.NOT_FOUND;
         Invitation invitation = invitationRepo.getOne(id);
@@ -64,6 +74,18 @@ public class InvitationServiceImpl implements InvitationService{
         activityRepo.save(activity);
         invitationRepo.save(invitation);
         return HttpStatus.OK;
+    }
+
+    @Override
+    public List<Invitation> getAllByActId(String id) {
+        List<Invitation> invitations = invitationRepo.findAllByActId(id);
+        return invitations.isEmpty() ? Collections.emptyList() : invitations;
+    }
+
+    @Override
+    public List<Invitation> getAllByUserId(String id) {
+        List<Invitation> invitations = invitationRepo.findAllByUserId(id);
+        return invitations.isEmpty() ? Collections.emptyList() : invitations;
     }
 
 

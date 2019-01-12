@@ -19,7 +19,7 @@ public enum AuditStatus {
     public static String getName(int index) {
         for (AuditStatus c : AuditStatus.values()) {
             if (c.getIndex() == index) {
-                return c.name;
+                    return c.name;
             }
         }
         return null;
