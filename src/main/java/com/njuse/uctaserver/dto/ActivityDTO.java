@@ -27,4 +27,8 @@ public class ActivityDTO implements Serializable {
 
     private String ownerId;
 
+    private String status;
+
+    private String auditStatus;
+
 }

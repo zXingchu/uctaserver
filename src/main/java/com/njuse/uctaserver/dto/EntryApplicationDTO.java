@@ -1,7 +1,7 @@
 package com.njuse.uctaserver.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,6 +9,8 @@ import java.util.Date;
 public class EntryApplicationDTO implements Serializable {
 
     private String id;
+
+    private Date time;
 
     private String actId;
 
