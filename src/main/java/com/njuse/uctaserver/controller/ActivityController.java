@@ -2,7 +2,6 @@ package com.njuse.uctaserver.controller;
 
 import com.njuse.uctaserver.dto.ActivityDTO;
 import com.njuse.uctaserver.model.entity.Activity;
-import com.njuse.uctaserver.model.entity.User;
 import com.njuse.uctaserver.service.ActivityService;
 import io.swagger.annotations.*;
 import org.springframework.beans.BeanUtils;

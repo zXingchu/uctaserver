@@ -14,8 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/test")
 public class TestController {
 
-    @ApiOperation(value = "测试api")
-    @GetMapping(value = "/isSuccess")
+    @GetMapping(value = "")
     public @ResponseBody  ResponseEntity<String> isSuccess(HttpServletRequest request) {
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }

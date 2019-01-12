@@ -33,7 +33,7 @@ public class ActMemberController {
             @ApiResponse(code = 304, message = "Not Modified"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    @DeleteMapping(value = "/{actId}/{userId}")
+    @DeleteMapping(value = "/{actId}/users/{userId}")
     public @ResponseBody
     ResponseEntity<String> delete(@PathVariable String actId, @PathVariable String userId) {
         HttpStatus resCode = actMemberService.delete(actId, userId);

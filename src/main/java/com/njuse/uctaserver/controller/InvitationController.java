@@ -1,10 +1,9 @@
 package com.njuse.uctaserver.controller;
 
-import com.njuse.uctaserver.dto.EntryApplicationDTO;
-import com.njuse.uctaserver.model.entity.EntryApplication;
-import com.njuse.uctaserver.service.ApplyService;
+import com.njuse.uctaserver.dto.InvitationDTO;
+import com.njuse.uctaserver.model.entity.Invitation;
+import com.njuse.uctaserver.service.InvitationService;
 import io.swagger.annotations.*;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,17 +12,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
-@Api(tags = "Application Controller")
+@Api(tags = "Invitation Controller")
 @Controller
-@RequestMapping("/activities")
-public class ApplyController {
+@RequestMapping("/activities/")
+public class InvitationController {
 
-    private final ApplyService applyService;
+
+    private final InvitationService invitationService;
 
     @Autowired
-    public ApplyController(ApplyService applyService) {
-        this.applyService = applyService;
+    public InvitationController(InvitationService invitationService) {
+        this.invitationService = invitationService;
     }
 
     @ApiOperation(value = "申请参加出游活动")
@@ -35,12 +34,12 @@ public class ApplyController {
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 304, message = "Not Modified")
     })
-    @PostMapping(value = "/{id}/applications")
+    @PostMapping(value = "/{id}/invitations")
     public @ResponseBody
-    ResponseEntity<String> joinActivity(@PathVariable String id, @RequestBody EntryApplicationDTO applicationDTO) {
-        EntryApplication application = new EntryApplication();
-        BeanUtils.copyProperties(applicationDTO, application);
-        HttpStatus resCode = applyService.add(application);
+    ResponseEntity<String> joinActivity(@PathVariable String id, @RequestBody InvitationDTO invitationDTO) {
+//        Invitation invitation = new Invitation();
+//        BeanUtils.copyProperties(invitationDTO, invitation);
+        HttpStatus resCode = invitationService.invite(invitationDTO.getActId(), invitationDTO.getUserId(), invitationDTO.getInviterId());
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 
@@ -50,12 +49,12 @@ public class ApplyController {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "Not FOUND")
     })
-    @GetMapping(value = "/{id}/applications")
+    @GetMapping(value = "/{id}/invitations")
     public @ResponseBody
-    ResponseEntity<List<EntryApplication>> getAllByActId(@PathVariable String id) {
-        List<EntryApplication> entryApplications = applyService.getAllByActivity(id);
-        HttpStatus resCode = entryApplications.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
-        return new ResponseEntity<>(entryApplications, resCode);
+    ResponseEntity<List<Invitation>> getAllByActId(@PathVariable String id) {
+        List<Invitation> invitations = invitationService.getAllByActId(id);
+        HttpStatus resCode = invitations.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+        return new ResponseEntity<>(invitations, resCode);
     }
 
     @ApiOperation(value = "操作申请结果")
@@ -68,10 +67,10 @@ public class ApplyController {
             @ApiResponse(code = 304, message = "Not Modified"),
             @ApiResponse(code = 406, message = "NOT_ACCEPTABLE,人数已满")
     })
-    @PostMapping(value = "/applications/{id}/{res}")
+    @PostMapping(value = "/invitations/{id}/{res}")
     public @ResponseBody
     ResponseEntity<String> isPermit(@PathVariable String id, @PathVariable int res) {
-        HttpStatus resCode = applyService.isPermit(id, res);
+        HttpStatus resCode = invitationService.respond(id, res);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 
@@ -81,12 +80,13 @@ public class ApplyController {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "Not FOUND")
     })
-    @GetMapping(value = "/applications/user/{id}")
+    @GetMapping(value = "/invitations/user/{id}")
     public @ResponseBody
-    ResponseEntity<List<EntryApplication>> getAllByUserId(@PathVariable String id) {
-        List<EntryApplication> entryApplications = applyService.getAllByUserId(id);
-        HttpStatus resCode = entryApplications.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
-        return new ResponseEntity<>(entryApplications, resCode);
+    ResponseEntity<List<Invitation>> getAllByUserId(@PathVariable String id) {
+        List<Invitation> invitations = invitationService.getAllByUserId(id);
+        HttpStatus resCode = invitations.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+        return new ResponseEntity<>(invitations, resCode);
     }
+
 
 }

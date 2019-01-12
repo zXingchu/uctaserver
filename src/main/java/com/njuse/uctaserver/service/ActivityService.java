@@ -2,7 +2,6 @@ package com.njuse.uctaserver.service;
 
 import com.njuse.uctaserver.dto.ActivityDTO;
 import com.njuse.uctaserver.model.entity.Activity;
-import com.njuse.uctaserver.model.entity.User;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
