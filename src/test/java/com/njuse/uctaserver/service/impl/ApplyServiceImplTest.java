@@ -83,5 +83,18 @@ public class ApplyServiceImplTest {
 
     }
 
+    @Test
+    public void test05_isPermit(){
+        assertEquals(HttpStatus.NOT_FOUND.value(),applyService.isPermit("hdff",2).value());
+        EntryApplication entryApplication1=applyService.get(testid);
+        entryApplication1.setStatus("已通过");
+        assertEquals(HttpStatus.NOT_MODIFIED.value(),applyService.isPermit(testid,1).value());
+        assertEquals(HttpStatus.OK.value(),applyService.isPermit(testid,-1).value());
+
+//        entryApplication1.setStatus("申请中");
+
+
+
+    }
 
 }

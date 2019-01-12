@@ -80,26 +80,32 @@ public class ActivityServiceImplTest {
         Activity activity1 = new Activity();
         activity1.setId("张文卿");
 		ActivityDTO activityDTO1=new ActivityDTO();
-//		  HttpStatus httpStatus = activityService.update(activity1);
-//        assertEquals(HttpStatus.NOT_FOUND.value(), httpStatus.value());
+		BeanUtils.copyProperties(activity1,activityDTO1);
+
+		HttpStatus httpStatus = activityService.update(activityDTO1);
+        assertEquals(HttpStatus.NOT_FOUND.value(), httpStatus.value());
 
 
 
-//        Activity activityReject = activityService.get(testId);
-//        String testStr2 = "测试未通过";
-//        activityReject.setStatus(testStr2);
-//        activityReject.setAuditStatus(AuditStatus.REJECT.getName());
-//        activityService.update(activityReject);
-//        Activity activityR = activityService.get(testId);
-//        assertEquals(testStr2, activityR.getStatus());
-//
-//        Activity activityAudit = activityService.get(testId);
-//        String testStr1 = "测试中";
-//        activityAudit.setStatus(testStr1);
-//        activityAudit.setAuditStatus(AuditStatus.AUDIT.getName());
-//        activityService.update(activityAudit);
-//        Activity activityA = activityService.get(testId);
-//        assertEquals(testStr1, activityA.getStatus());
+        Activity activityReject = activityService.get(testId);
+		ActivityDTO activityDTOR =new ActivityDTO();
+		BeanUtils.copyProperties(activityReject, activityDTOR);
+        String testStr2 = "测试未通过";
+        activityDTOR.setStatus(testStr2);
+		activityDTOR.setAuditStatus(AuditStatus.REJECT.getName());
+        activityService.update(activityDTOR);
+        Activity activityR = activityService.get(testId);
+        assertEquals(testStr2, activityR.getStatus());
+
+        Activity activityAudit = activityService.get(testId);
+		ActivityDTO activityDTOAudit =new ActivityDTO();
+		BeanUtils.copyProperties(activityAudit, activityDTOAudit);
+        String testStr1 = "测试中";
+		activityDTOAudit.setStatus(testStr1);
+		activityDTOAudit.setAuditStatus(AuditStatus.AUDIT.getName());
+        activityService.update(activityDTOAudit);
+        Activity activityA = activityService.get(testId);
+        assertEquals(testStr1, activityA.getStatus());
 
     }
 
