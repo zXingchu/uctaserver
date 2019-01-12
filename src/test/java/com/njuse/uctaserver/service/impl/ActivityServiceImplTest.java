@@ -70,8 +70,8 @@ public class ActivityServiceImplTest {
         ActivityDTO activityDTO =new ActivityDTO();
         BeanUtils.copyProperties(activity2, activityDTO);
         String testStr = "测试通过";
-        activityDTO.setStatus(testStr);
-        activityDTO.setAuditStatus(AuditStatus.ACCEPT.getName());
+//        activityDTO.setStatus(testStr);
+//        activityDTO.setAuditStatus(AuditStatus.ACCEPT.getName());
         activityService.update(activityDTO);
         Activity activity3 = activityService.get(testId);
         assertEquals(testStr, activity3.getStatus());

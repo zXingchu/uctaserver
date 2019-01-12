@@ -59,7 +59,6 @@ public class InvitationServiceImpl implements InvitationService{
 
     @Override
     public HttpStatus respond(String id, int resCode) {
-
         if (!invitationRepo.existsById(id))
             return HttpStatus.NOT_FOUND;
         Invitation invitation = invitationRepo.getOne(id);

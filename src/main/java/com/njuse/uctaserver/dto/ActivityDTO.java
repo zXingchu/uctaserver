@@ -12,9 +12,6 @@ public class ActivityDTO implements Serializable {
     private String id;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
-    private Date createTime;
-
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date startTime;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
@@ -28,12 +25,6 @@ public class ActivityDTO implements Serializable {
 
     private int number;
 
-    private int partNumber;
-
     private String ownerId;
-
-    private String auditStatus;
-
-    private String status;
 
 }

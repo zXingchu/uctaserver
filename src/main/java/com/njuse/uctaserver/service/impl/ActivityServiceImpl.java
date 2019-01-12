@@ -68,7 +68,8 @@ public class ActivityServiceImpl implements ActivityService {
             return HttpStatus.NOT_FOUND;
         Activity activity = activityRepo.getOne(id);
         activity.setAuditStatus(AuditStatus.getName(res));
-        return HttpStatus.NOT_ACCEPTABLE;
+        activityRepo.save(activity);
+        return HttpStatus.OK;
     }
 
     @Override

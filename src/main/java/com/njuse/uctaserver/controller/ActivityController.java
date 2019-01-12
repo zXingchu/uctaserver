@@ -28,7 +28,7 @@ public class ActivityController {
 
     @ApiOperation(value = "获取当前所有活动")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "startTime", value = "过滤条件开始时间 startTime", required = false, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "startTime", value = "过滤条件开始时间 startTime yyyy-MM-dd HH:mm", required = false, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "number", value = "过滤条件参与最多人数 number", required = false, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "status", value = "过滤条件状态 status", required = false, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "place", value = "过滤条件活动地点 place", required = false, dataType = "String", paramType = "query")
@@ -39,7 +39,7 @@ public class ActivityController {
     })
     @GetMapping(value = "")
     public @ResponseBody
-    ResponseEntity<List<Activity>> getAll(@RequestParam(value = "startTime", required = false) String startTime,
+    ResponseEntity<List<Activity>> getAll(@RequestParam(value = "startTime yyyy-MM-dd HH:mm", required = false) String startTime,
                                           @RequestParam(value = "number", required = false) String number,
                                           @RequestParam(value = "status", required = false) String status,
                                           @RequestParam(value = "place", required = false) String place) {
@@ -48,7 +48,7 @@ public class ActivityController {
     }
 
     @ApiOperation(value = "创建出游活动")
-    @ApiImplicitParam(name = "activityDTO", value = "出游活动详情实体类", required = true, dataType = "ActivityDTO", paramType = "body")
+    @ApiImplicitParam(name = "activityDTO", value = "出游活动详情实体类 时间yyyy-MM-dd HH:mm", required = true, dataType = "ActivityDTO", paramType = "body")
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 304, message = "Not Modified"),
@@ -107,9 +107,9 @@ public class ActivityController {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    @PostMapping(value = "/{id}/{res}")
+    @PostMapping(value = "audit/{id}/{res}")
     public @ResponseBody
-    ResponseEntity<String> audit(@PathVariable String id, @RequestBody int res) {
+    ResponseEntity<String> audit(@PathVariable String id, @PathVariable int res) {
         HttpStatus resCode = activityService.audit(id, res);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
