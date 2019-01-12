@@ -28,10 +28,10 @@ public class ActivityController {
 
     @ApiOperation(value = "获取当前所有活动")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "startTime", value = "过滤条件开始时间 startTime yyyy-MM-dd HH:mm", required = false, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "number", value = "过滤条件参与最多人数 number", required = false, dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "status", value = "过滤条件状态 status", required = false, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "place", value = "过滤条件活动地点 place", required = false, dataType = "String", paramType = "query")
+            @ApiImplicitParam(name = "startTime", value = "过滤条件 开始时间 startTime yyyy-MM-dd HH:mm", required = false, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "number", value = "过滤条件 参与最多人数 number", required = false, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "status", value = "过滤条件 状态 status", required = false, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "place", value = "过滤条件 活动地点 place", required = false, dataType = "String", paramType = "query")
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
@@ -142,6 +142,20 @@ public class ActivityController {
     public @ResponseBody
     ResponseEntity<List<Activity>> getAllByUserId(@PathVariable String id, @RequestParam(value = "param1", required = true) String param1) {
         List<Activity> activities = activityService.getAllByUserId(id);
+        HttpStatus resCode = activities.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+        return new ResponseEntity<>(activities, resCode);
+    }
+
+    @ApiOperation(value = "获取当前用户所拥有的所有活动")
+    @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String", paramType = "path")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @GetMapping(value = "/owner/{id}")
+    public @ResponseBody
+    ResponseEntity<List<Activity>> getAllByOwnerId(@PathVariable String ownerId) {
+        List<Activity> activities = activityService.getAllByOwnerId(ownerId);
         HttpStatus resCode = activities.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
         return new ResponseEntity<>(activities, resCode);
     }

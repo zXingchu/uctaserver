@@ -16,7 +16,7 @@ public interface ActMemberRepo extends JpaRepository<ActivityMember, Integer> {
 
 
     @Query("select new com.njuse.uctaserver.model.entity.User" +
-            "(u.id, u.name, u.age, u.likeNum, u.treadNum, u.labels) " +
+            "(u.id, u.name, u.weChatId, u.age, u.likeNum, u.treadNum, u.labels) " +
             "from com.njuse.uctaserver.model.entity.User u " +
             "join com.njuse.uctaserver.model.entity.ActivityMember a on u.id=a.userId " +
             "where a.actId=?1")

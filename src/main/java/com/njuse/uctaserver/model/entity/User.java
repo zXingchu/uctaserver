@@ -22,6 +22,8 @@ public class User implements Serializable {
 
     private String name;
 
+    private String weChatId;
+
     private int age;
 
     private int likeNum = 0;

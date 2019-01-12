@@ -112,4 +112,13 @@ public class ActivityServiceImpl implements ActivityService {
         return Collections.emptyList();
     }
 
+    @Override
+    public List<Activity> getAllByOwnerId(String ownerId) {
+        if (!userRepo.existsById(ownerId)) {
+            return Collections.emptyList();
+        }
+        List<Activity> activities = activityRepo.findAllByOwnerId(ownerId);
+        return activities.isEmpty() ? Collections.emptyList() : activities;
+    }
+
 }

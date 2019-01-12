@@ -28,4 +28,6 @@ public interface ActivityService {
 
     List<Activity> getAll(String hh);
 
+    List<Activity> getAllByOwnerId(String ownerId);
+
 }
