@@ -1,6 +1,6 @@
 package com.njuse.uctaserver.controller;
 
-import io.swagger.annotations.ApiOperation;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

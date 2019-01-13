@@ -70,8 +70,8 @@ public class ActivityServiceImplTest {
         ActivityDTO activityDTO =new ActivityDTO();
         BeanUtils.copyProperties(activity2, activityDTO);
         String testStr = "测试通过";
-//        activityDTO.setStatus(testStr);
-//        activityDTO.setAuditStatus(AuditStatus.ACCEPT.getName());
+        activityDTO.setStatus(testStr);
+        activityDTO.setAuditStatus(AuditStatus.ACCEPT.getName());
         activityService.update(activityDTO);
         Activity activity3 = activityService.get(testId);
         assertEquals(testStr, activity3.getStatus());
@@ -91,6 +91,7 @@ public class ActivityServiceImplTest {
 		ActivityDTO activityDTOR =new ActivityDTO();
 		BeanUtils.copyProperties(activityReject, activityDTOR);
         String testStr2 = "测试未通过";
+
         activityDTOR.setStatus(testStr2);
 		activityDTOR.setAuditStatus(AuditStatus.REJECT.getName());
         activityService.update(activityDTOR);
@@ -115,6 +116,7 @@ public class ActivityServiceImplTest {
         assertEquals(activity.getName(), activity2.getName());
         Activity activity3 = activityService.get("ss");
        assertEquals(null,activity3);
+
     }
 
 
@@ -131,15 +133,34 @@ public class ActivityServiceImplTest {
     }
 
     @Test
-    public void test_07_getAllAuditing() {
-        List<Activity> activities = activityService.getAllAuditing();
+    public void test_07_getAllByName() {
+        List<Activity> activities = activityService.getAllByName("急急急");
         assertTrue(activities.size() > 0);
+        assertTrue(activityService.getAllByName("wqw").size() == 0);
+
+
     }
 
     @Test
-    public void test_08_getHttpStatus() {
+    public void test_08_getAllByUserId(){
+        List<Activity> activities=activityService.getAllByUserId("22");
+        assertTrue(activities.size() == 0);
+        assertTrue(activityService.getAllByUserId("32").size() == 0);
+
+
+
+    }
+    @Test
+    public void test_09_getAllByOwner(){
+        List<Activity> activities=activityService.getAllByOwnerId("张文卿");
+        assertTrue(activities.size() > 0);
+        assertTrue(activityService.getAllByOwnerId("dsfszz").size()==0);
+    }
+
+    @Test
+    public void test_10_audit() {
         assertEquals(HttpStatus.NOT_FOUND.value(),activityService.audit("sa",2).value());
-        assertEquals(HttpStatus.NOT_ACCEPTABLE.value(),activityService.audit(testId,2).value());
+        assertEquals(HttpStatus.OK.value(),activityService.audit(testId,2).value());
     }
 
 }

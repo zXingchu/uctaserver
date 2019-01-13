@@ -32,7 +32,7 @@ public class Invitation {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date time = new Date();
 
-//    private String description;
+
 
     private String status = InvitationStatus.INVITE.getName();
 

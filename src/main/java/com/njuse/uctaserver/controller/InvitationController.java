@@ -37,8 +37,7 @@ public class InvitationController {
     @PostMapping(value = "/{id}/invitations")
     public @ResponseBody
     ResponseEntity<String> joinActivity(@PathVariable String id, @RequestBody InvitationDTO invitationDTO) {
-//        Invitation invitation = new Invitation();
-//        BeanUtils.copyProperties(invitationDTO, invitation);
+
         HttpStatus resCode = invitationService.invite(invitationDTO.getActId(), invitationDTO.getUserId(), invitationDTO.getInviterId());
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
