@@ -36,16 +36,19 @@ public class UserController {
     @GetMapping(value = "/login")
     public @ResponseBody
     String tryLogin(HttpServletRequest request){
+
+        String openId = "openId";
+
         String jscode = request.getParameter("code");
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> re = rt.getForEntity("https://api.weixin.qq.com/sns/jscode2session?appid={1}&secret={2}&js_code={3}&grant_type=authorization_code",String.class,microProgram.getAppID(),microProgram.getAppSecret(),jscode);
         JSONObject jo = JSONObject.parseObject(re.getBody());
         HttpSession session = request.getSession();
-        session.setAttribute("session_key",jo.get("session_key"));
+        session.setAttribute("session_key",jo.get("session_key").toString());
         Map<String,String> resultmap = new HashMap<>();
-        resultmap.put("openid",jo.get("openid").toString());
+        resultmap.put(openId,jo.get(openId).toString());
         resultmap.put("sessionid",session.getId());
-        return jo.get("openid").toString();
+        return jo.get(openId).toString();
     }
 
     @ApiOperation(value = "获取指定id用户信息")

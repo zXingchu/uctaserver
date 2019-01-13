@@ -15,9 +15,9 @@ public class ActivityStatusTest {
 
     @Test
     public void getName1() {
-        assertEquals("未开始", ActivityStatus.BEFORE_ACT.getName());
-        assertEquals("活动中", ActivityStatus.IN_ACT.getName());
-        assertEquals("已结束", ActivityStatus.AFTER_ACT.getName());
+        assertEquals("未开始", ActivityStatus.getName(-1));
+        assertEquals("活动中", ActivityStatus.getName(0));
+        assertEquals("已结束", ActivityStatus.getName(1));
     }
 
     @Test
