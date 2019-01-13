@@ -1,6 +1,7 @@
 package com.njuse.uctaserver.service.impl;
 
 import com.njuse.uctaserver.model.entity.User;
+import com.njuse.uctaserver.model.repo.UserRepo;
 import com.njuse.uctaserver.service.UserService;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -22,6 +23,8 @@ import static org.junit.Assert.assertEquals;
 public class UserServiceImplTest {
 	@Autowired
 	UserService userService;
+	@Autowired
+	UserRepo userRepo;
 
 	private  String testid;
 
@@ -44,14 +47,17 @@ public class UserServiceImplTest {
 		a.setTreadNum(12);
 		a.setWeChatId("sdasdasf");
 		assertEquals(HttpStatus.CREATED.value(),userService.add(a).value());
+		userRepo.deleteById("2");
+
+
 
 	}
 
 	@Test
 	public void likeOrThread() throws Exception {
-		assertEquals(HttpStatus.NOT_FOUND.value(),userService.likeOrThread("434",12));
-		assertEquals(HttpStatus.OK.value(),userService.likeOrThread("1",0));
-		assertEquals(HttpStatus.OK.value(),userService.likeOrThread("1",1));
+		assertEquals(HttpStatus.NOT_FOUND.value(),userService.likeOrThread("434",12).value());
+		assertEquals(HttpStatus.OK.value(),userService.likeOrThread("1",0).value());
+		assertEquals(HttpStatus.OK.value(),userService.likeOrThread("1",1).value());
 
 
 	}
