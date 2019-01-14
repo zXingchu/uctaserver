@@ -28,7 +28,7 @@ public class InvitationController {
     @ApiOperation(value = "申请参加出游活动")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "出游活动id", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "applicationDTO", value = "申请参加详情DTO类", required = true, dataType = "EntryApplicationDTO", paramType = "body")
+            @ApiImplicitParam(name = "applicationDTO", value = "申请参加详情DTO类", required = true, dataType = "ApplicationDTO", paramType = "body")
     })
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created"),

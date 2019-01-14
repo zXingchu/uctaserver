@@ -1,7 +1,7 @@
 package com.njuse.uctaserver.controller;
 
-import com.njuse.uctaserver.dto.EntryApplicationDTO;
-import com.njuse.uctaserver.model.entity.EntryApplication;
+import com.njuse.uctaserver.dto.ApplicationDTO;
+import com.njuse.uctaserver.model.entity.Application;
 import com.njuse.uctaserver.service.ApplyService;
 import io.swagger.annotations.*;
 import org.springframework.beans.BeanUtils;
@@ -29,7 +29,7 @@ public class ApplyController {
     @ApiOperation(value = "申请参加出游活动")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "出游活动id", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "applicationDTO", value = "申请参加详情DTO类", required = true, dataType = "EntryApplicationDTO", paramType = "body")
+            @ApiImplicitParam(name = "applicationDTO", value = "申请参加详情DTO类", required = true, dataType = "ApplicationDTO", paramType = "body")
     })
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created"),
@@ -37,8 +37,8 @@ public class ApplyController {
     })
     @PostMapping(value = "/{id}/applications")
     public @ResponseBody
-    ResponseEntity<String> joinActivity(@PathVariable String id, @RequestBody EntryApplicationDTO applicationDTO) {
-        EntryApplication application = new EntryApplication();
+    ResponseEntity<String> joinActivity(@PathVariable String id, @RequestBody ApplicationDTO applicationDTO) {
+        Application application = new Application();
         BeanUtils.copyProperties(applicationDTO, application);
         HttpStatus resCode = applyService.add(application);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
@@ -52,8 +52,8 @@ public class ApplyController {
     })
     @GetMapping(value = "/{id}/applications")
     public @ResponseBody
-    ResponseEntity<List<EntryApplication>> getAllByActId(@PathVariable String id) {
-        List<EntryApplication> entryApplications = applyService.getAllByActivity(id);
+    ResponseEntity<List<ApplicationDTO>> getAllByActId(@PathVariable String id) {
+        List<ApplicationDTO> entryApplications = applyService.getAllByActivity(id);
         HttpStatus resCode = entryApplications.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
         return new ResponseEntity<>(entryApplications, resCode);
     }
@@ -83,8 +83,8 @@ public class ApplyController {
     })
     @GetMapping(value = "/applications/user/{id}")
     public @ResponseBody
-    ResponseEntity<List<EntryApplication>> getAllByUserId(@PathVariable String id) {
-        List<EntryApplication> entryApplications = applyService.getAllByUserId(id);
+    ResponseEntity<List<ApplicationDTO>> getAllByUserId(@PathVariable String id) {
+        List<ApplicationDTO> entryApplications = applyService.getAllByUserId(id);
         HttpStatus resCode = entryApplications.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
         return new ResponseEntity<>(entryApplications, resCode);
     }

@@ -11,10 +11,16 @@ public class InvitationDTO {
 
     private String actId;
 
+    private String actName;
+
     private String userId;
+
+    private String userName;
 
     private Date time = new Date();
 
     private String inviterId;
+
+    private String inviterName;
 
 }

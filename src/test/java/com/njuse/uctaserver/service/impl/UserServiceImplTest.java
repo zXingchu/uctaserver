@@ -43,7 +43,7 @@ public class UserServiceImplTest {
 		a.setGender(1);
 		a.setLabels("ssss");
 		a.setLikeNum(21);
-		a.setName("是大大撒");
+		a.setNickName("是大大撒");
 		a.setTreadNum(12);
 		assertEquals(HttpStatus.CREATED.value(),userService.addOrUpdate(a).value());
 		userRepo.deleteById("2");
