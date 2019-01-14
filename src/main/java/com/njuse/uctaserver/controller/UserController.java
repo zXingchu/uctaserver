@@ -35,9 +35,11 @@ public class UserController {
 
     @PostMapping(value = "/login")
     public @ResponseBody
-    String tryLogin(UserDTO userDTO,String jscode){
+    String tryLogin(@RequestParam UserDTO userDTO,@RequestParam String jscode){
 
         String openId = "openId";
+
+        System.out.println(jscode);
 
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> re = rt.getForEntity("https://api.weixin.qq.com/sns/jscode2session?appid={1}&secret={2}&js_code={3}&grant_type=authorization_code",String.class,microProgram.getAppID(),microProgram.getAppSecret(),jscode);
