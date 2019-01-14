@@ -65,7 +65,7 @@ public class InvitationServiceImpl implements InvitationService{
         Activity activity = activityRepo.getOne(invitation.getActId());
         int oldStatus = InvitationStatus.getIndex(invitation.getStatus());
         Boolean statement = Objects.requireNonNull(InvitationStatus.getName(resCode)).equals(invitation.getStatus());
-        statement = statement || activity.getNumber() >= activity.getPartNumber() && resCode == InvitationStatus.ACCEPT.getIndex();
+        statement = statement || (activity.getPartNumber() >= activity.getNumber() && resCode == InvitationStatus.ACCEPT.getIndex());
         if (statement)
             return HttpStatus.NOT_MODIFIED;
         if (oldStatus != InvitationStatus.INVITE.getIndex())

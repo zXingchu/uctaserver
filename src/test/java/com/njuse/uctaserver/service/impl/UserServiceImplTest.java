@@ -46,7 +46,6 @@ public class UserServiceImplTest {
 		a.setName("是大大撒");
 		a.setTreadNum(12);
 		assertEquals(HttpStatus.CREATED.value(),userService.addOrUpdate(a).value());
-		assertEquals(HttpStatus.CREATED.value(),userService.add(a).value());
 		userRepo.deleteById("2");
 
 
