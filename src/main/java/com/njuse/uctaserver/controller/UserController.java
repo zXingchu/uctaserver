@@ -35,7 +35,7 @@ public class UserController {
 
     @PostMapping(value = "/login")
     public @ResponseBody
-    ResponseEntity<String> tryLogin(UserDTO userDTO,String jscode){
+    String tryLogin(UserDTO userDTO,String jscode){
 
         String openId = "openId";
 
@@ -50,9 +50,7 @@ public class UserController {
         BeanUtils.copyProperties(userDTO, user, "likeNum","treadNum", "labels");
         user.setId(openId);
         HttpStatus resCode = userService.addOrUpdate(user);
-        return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
-
-        return jo.get(openId).toString();
+        return openId;
     }
 
     @ApiOperation(value = "获取指定id用户信息")
