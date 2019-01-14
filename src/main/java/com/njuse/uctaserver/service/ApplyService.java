@@ -1,20 +1,21 @@
 package com.njuse.uctaserver.service;
 
-import com.njuse.uctaserver.model.entity.EntryApplication;
+import com.njuse.uctaserver.dto.ApplicationDTO;
+import com.njuse.uctaserver.model.entity.Application;
 import org.springframework.http.HttpStatus;
 import java.util.List;
 
 public interface ApplyService {
 
-    HttpStatus add(EntryApplication entryApplication);
+    HttpStatus add(Application application);
 
     HttpStatus delete(String id);
 
-    EntryApplication get(String id);
+    Application get(String id);
 
-    List<EntryApplication> getAllByUserId(String userId);
+    List<ApplicationDTO> getAllByUserId(String userId);
 
-    List<EntryApplication> getAllByActivity(String actId);
+    List<ApplicationDTO> getAllByActivity(String actId);
 
     HttpStatus isPermit(String id, int resCode);
 }

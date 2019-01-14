@@ -17,7 +17,7 @@ import java.util.Date;
 @Entity(name = "application")
 @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler"})
-public class EntryApplication implements Serializable {
+public class Application implements Serializable {
 
     @Id
     @GeneratedValue(generator = "jpa-uuid")

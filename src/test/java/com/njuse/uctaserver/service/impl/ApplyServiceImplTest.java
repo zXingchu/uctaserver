@@ -1,6 +1,7 @@
 package com.njuse.uctaserver.service.impl;
 
-import com.njuse.uctaserver.model.entity.EntryApplication;
+import com.njuse.uctaserver.dto.ApplicationDTO;
+import com.njuse.uctaserver.model.entity.Application;
 import com.njuse.uctaserver.service.ApplyService;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -28,22 +29,22 @@ public class ApplyServiceImplTest {
     ApplyService applyService;
 
     private  static  String testid;
-    private EntryApplication entryApplication=new EntryApplication();
+    private Application application =new Application();
 
     @Before
     public void setUp() throws Exception{
-        entryApplication.setActId("2");
-        entryApplication.setUserId("213124");
-        entryApplication.setDescription("是多少啊");
-        entryApplication.setStatus("申请中");
-        entryApplication.setTime(new Date());
+        application.setActId("2");
+        application.setUserId("213124");
+        application.setDescription("是多少啊");
+        application.setStatus("申请中");
+        application.setTime(new Date());
 
     }
 
     @Test
     public void test01_add() {
-        assertEquals(applyService.add(entryApplication).value(), HttpStatus.CREATED.value());
-        testid=entryApplication.getId();
+        assertEquals(applyService.add(application).value(), HttpStatus.CREATED.value());
+        testid= application.getId();
     }
 
     @Test
@@ -54,30 +55,30 @@ public class ApplyServiceImplTest {
 
 //    @Test
 //    public void test02_update() {
-//        EntryApplication entryApplication1=applyService.get(testid);
+//        Application entryApplication1=applyService.get(testid);
 //        entryApplication1.setTime(new Date());
 //    }
 
     @Test
     public void test02_get() {
-        EntryApplication entryApplication1=applyService.get(testid);
-        entryApplication.setId(testid);
-        entryApplication.setTime(entryApplication1.getTime());
-        assertEquals(entryApplication1,entryApplication);
+        Application application1 =applyService.get(testid);
+        application.setId(testid);
+        application.setTime(application1.getTime());
+        assertEquals(application1, application);
         assertEquals(null,applyService.get("222222"));
     }
 
     @Test
     public void test03_getAllByUserId() {
-        List<EntryApplication> entryApplicationList=applyService.getAllByUserId("213124");
-        assertTrue(entryApplicationList.size()>0);
+        List<ApplicationDTO> applicationList =applyService.getAllByUserId("213124");
+        assertTrue(applicationList.size()>0);
         assertEquals(Collections.emptyList(),applyService.getAllByUserId("33"));
     }
 
     @Test
     public void test04_getAllByActivity() {
-        List<EntryApplication> entryApplicationList=applyService.getAllByActivity("2");
-        assertTrue(entryApplicationList.size()>0);
+        List<ApplicationDTO> applicationList =applyService.getAllByActivity("1");
+        assertTrue(applicationList.size()>0);
         assertEquals(Collections.emptyList(),applyService.getAllByActivity("33"));
 
 
@@ -86,12 +87,12 @@ public class ApplyServiceImplTest {
     @Test
     public void test05_isPermit(){
         assertEquals(HttpStatus.NOT_FOUND.value(),applyService.isPermit("hdff",2).value());
-        EntryApplication entryApplication1=applyService.get(testid);
-        entryApplication1.setStatus("已通过");
+        Application application1 =applyService.get(testid);
+        application1.setStatus("已通过");
         assertEquals(HttpStatus.NOT_MODIFIED.value(),applyService.isPermit(testid,0).value());
         assertEquals(HttpStatus.OK.value(),applyService.isPermit(testid,-1).value());
 
-//        entryApplication1.setStatus("申请中");
+//        application1.setStatus("申请中");
 
 
 
