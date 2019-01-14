@@ -35,20 +35,29 @@ public class UserController {
 
     @PostMapping(value = "/login")
     public @ResponseBody
-    String tryLogin(UserDTO userDTO,String jscode){
+    String tryLogin(@RequestBody Map<String,Object> paraments){
 
         String openId = "openId";
 
+        for(String key:paraments.keySet()){
+            System.out.println(key+" "+paraments.get(key));
+        }
+
         RestTemplate rt = new RestTemplate();
-        ResponseEntity<String> re = rt.getForEntity("https://api.weixin.qq.com/sns/jscode2session?appid={1}&secret={2}&js_code={3}&grant_type=authorization_code",String.class,microProgram.getAppID(),microProgram.getAppSecret(),jscode);
+        ResponseEntity<String> re = rt.getForEntity("https://api.weixin.qq.com/sns/jscode2session?appid={1}&secret={2}&js_code={3}&grant_type=authorization_code",String.class,microProgram.getAppID(),microProgram.getAppSecret(),paraments.get("jscode").toString());
         JSONObject jo = JSONObject.parseObject(re.getBody());
-        openId = jo.get(openId).toString();
+        openId = jo.get("openid").toString();
 
         User user = userService.get(openId);
         if(user == null)
             user = new User();
-        BeanUtils.copyProperties(userDTO, user, "likeNum","treadNum", "labels");
         user.setId(openId);
+        user.setNickName(paraments.get("nickName").toString());
+        user.setGender(Integer.parseInt(paraments.get("gender").toString()));
+        user.setAvatarUrl(paraments.get("avatarUrl").toString());
+        user.setCity(paraments.get("city").toString());
+        user.setProvince(paraments.get("province").toString());
+
         HttpStatus resCode = userService.addOrUpdate(user);
         return openId;
     }
