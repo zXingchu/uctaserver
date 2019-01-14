@@ -36,7 +36,7 @@ public class UserController {
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> re = rt.getForEntity("https://api.weixin.qq.com/sns/jscode2session?appid={1}&secret={2}&js_code={3}&grant_type=authorization_code",String.class,microProgram.getAppID(),microProgram.getAppSecret(),paraments.get("jscode").toString());
         JSONObject jo = JSONObject.parseObject(re.getBody());
-        String openId = jo.get("openId").toString();
+        String openId = jo.get("openid").toString();
 
         User user = userService.get(openId);
         if(user == null)
