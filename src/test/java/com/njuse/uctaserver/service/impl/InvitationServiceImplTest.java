@@ -56,7 +56,12 @@ public class InvitationServiceImplTest {
 	public void respond() throws Exception {
 		assertEquals(HttpStatus.NOT_FOUND.value(),invitationService.respond("ds",232).value());
 		assertEquals(HttpStatus.NOT_MODIFIED.value(),invitationService.respond("1",-1).value());
-		assertEquals(HttpStatus.OK.value(),invitationService.respond("1",0).value());
+		Invitation invitation=invitationRepo.getOne("2");
+		invitation.setStatus("邀请中");
+		invitationRepo.save(invitation);
+		assertEquals(HttpStatus.OK.value(),invitationService.respond("2",1).value());
+
+
 
 
 	}

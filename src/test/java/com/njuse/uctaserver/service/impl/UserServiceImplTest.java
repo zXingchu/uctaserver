@@ -1,6 +1,7 @@
 package com.njuse.uctaserver.service.impl;
 
 import com.njuse.uctaserver.model.entity.User;
+import com.njuse.uctaserver.model.repo.UserRepo;
 import com.njuse.uctaserver.service.UserService;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -22,6 +23,8 @@ import static org.junit.Assert.assertEquals;
 public class UserServiceImplTest {
 	@Autowired
 	UserService userService;
+	@Autowired
+    UserRepo userRepo;
 
 	private  String testid;
 
@@ -43,6 +46,10 @@ public class UserServiceImplTest {
 		a.setName("是大大撒");
 		a.setTreadNum(12);
 		assertEquals(HttpStatus.CREATED.value(),userService.addOrUpdate(a).value());
+		assertEquals(HttpStatus.CREATED.value(),userService.add(a).value());
+		userRepo.deleteById("2");
+
+
 
 	}
 
