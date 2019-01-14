@@ -33,21 +33,25 @@ public class UserController {
         this.microProgram = microProgram;
     }
 
-    @GetMapping(value = "/login")
+    @PostMapping(value = "/login")
     public @ResponseBody
-    String tryLogin(HttpServletRequest request){
+    ResponseEntity<String> tryLogin(UserDTO userDTO,String jscode){
 
         String openId = "openId";
 
-        String jscode = request.getParameter("code");
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> re = rt.getForEntity("https://api.weixin.qq.com/sns/jscode2session?appid={1}&secret={2}&js_code={3}&grant_type=authorization_code",String.class,microProgram.getAppID(),microProgram.getAppSecret(),jscode);
         JSONObject jo = JSONObject.parseObject(re.getBody());
-        HttpSession session = request.getSession();
-        session.setAttribute("session_key",jo.get("session_key").toString());
-        Map<String,String> resultmap = new HashMap<>();
-        resultmap.put(openId,jo.get(openId).toString());
-        resultmap.put("sessionid",session.getId());
+        openId = jo.get(openId).toString();
+
+        User user = userService.get(openId);
+        if(user == null)
+            user = new User();
+        BeanUtils.copyProperties(userDTO, user, "likeNum","treadNum", "labels");
+        user.setId(openId);
+        HttpStatus resCode = userService.addOrUpdate(user);
+        return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
+
         return jo.get(openId).toString();
     }
 
