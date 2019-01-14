@@ -27,8 +27,6 @@ public class ApplicationDTO implements Serializable {
 
     private String nickName;
 
-    private String description;
-
     private String status;
 
 }

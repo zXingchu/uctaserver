@@ -32,8 +32,6 @@ public class Invitation {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date time = new Date();
 
-
-
     private String status = InvitationStatus.INVITE.getName();
 
 }

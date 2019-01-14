@@ -12,10 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.Map;
 
 @Api(tags = "User Controller")
@@ -37,16 +33,10 @@ public class UserController {
     public @ResponseBody
     String tryLogin(@RequestBody Map<String,Object> paraments){
 
-        String openId = "openId";
-
-        for(String key:paraments.keySet()){
-            System.out.println(key+" "+paraments.get(key));
-        }
-
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> re = rt.getForEntity("https://api.weixin.qq.com/sns/jscode2session?appid={1}&secret={2}&js_code={3}&grant_type=authorization_code",String.class,microProgram.getAppID(),microProgram.getAppSecret(),paraments.get("jscode").toString());
         JSONObject jo = JSONObject.parseObject(re.getBody());
-        openId = jo.get("openid").toString();
+        String openId = jo.get("openId").toString();
 
         User user = userService.get(openId);
         if(user == null)
@@ -57,8 +47,6 @@ public class UserController {
         user.setAvatarUrl(paraments.get("avatarUrl").toString());
         user.setCity(paraments.get("city").toString());
         user.setProvince(paraments.get("province").toString());
-
-        HttpStatus resCode = userService.addOrUpdate(user);
         return openId;
     }
 

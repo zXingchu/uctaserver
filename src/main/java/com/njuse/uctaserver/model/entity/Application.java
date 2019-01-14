@@ -31,8 +31,6 @@ public class Application implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date time = new Date();
 
-    private String description;
-
     private String status = ApplyStatus.APPLY.getName();
 
 }

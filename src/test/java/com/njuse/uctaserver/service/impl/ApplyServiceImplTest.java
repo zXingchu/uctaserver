@@ -35,7 +35,6 @@ public class ApplyServiceImplTest {
     public void setUp() throws Exception{
         application.setActId("2");
         application.setUserId("213124");
-        application.setDescription("是多少啊");
         application.setStatus("申请中");
         application.setTime(new Date());
 

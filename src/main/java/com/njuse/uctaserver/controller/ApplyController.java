@@ -75,6 +75,20 @@ public class ApplyController {
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 
+    @ApiOperation(value = "操作申请结果")
+    @ApiImplicitParam(name = "id", value = "申请id", required = true, dataType = "String", paramType = "path")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 304, message = "Not Modified"),
+            @ApiResponse(code = 406, message = "NOT_ACCEPTABLE,人数已满")
+    })
+    @DeleteMapping(value = "/applications/{id}")
+    public @ResponseBody
+    ResponseEntity<String> delete(@PathVariable String id) {
+        HttpStatus resCode = applyService.delete(id);
+        return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
+    }
+
     @ApiOperation(value = "获取指定id的用户的所有申请")
     @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String", paramType = "path")
     @ApiResponses({
