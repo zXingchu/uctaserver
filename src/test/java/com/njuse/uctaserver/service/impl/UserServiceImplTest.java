@@ -34,7 +34,7 @@ public class UserServiceImplTest {
 	@Test
 	public void add() throws Exception {
 		User user=userService.get("1");
-		assertEquals(HttpStatus.FOUND.value(),userService.add(user).value());
+		assertEquals(HttpStatus.OK.value(),userService.addOrUpdate(user).value());
 		User a=new User();
 		a.setId("2");
 		a.setAge(22);
@@ -42,16 +42,15 @@ public class UserServiceImplTest {
 		a.setLikeNum(21);
 		a.setName("是大大撒");
 		a.setTreadNum(12);
-		a.setWeChatId("sdasdasf");
-		assertEquals(HttpStatus.CREATED.value(),userService.add(a).value());
+		assertEquals(HttpStatus.CREATED.value(),userService.addOrUpdate(a).value());
 
 	}
 
 	@Test
 	public void likeOrThread() throws Exception {
-		assertEquals(HttpStatus.NOT_FOUND.value(),userService.likeOrThread("434",12));
-		assertEquals(HttpStatus.OK.value(),userService.likeOrThread("1",0));
-		assertEquals(HttpStatus.OK.value(),userService.likeOrThread("1",1));
+		assertEquals(HttpStatus.NOT_FOUND.value(),userService.likeOrThread("434",12).value());
+		assertEquals(HttpStatus.OK.value(),userService.likeOrThread("1",0).value());
+		assertEquals(HttpStatus.OK.value(),userService.likeOrThread("1",1).value());
 
 
 	}

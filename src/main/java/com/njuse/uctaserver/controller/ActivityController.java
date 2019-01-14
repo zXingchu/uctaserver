@@ -39,7 +39,7 @@ public class ActivityController {
     })
     @GetMapping(value = "")
     public @ResponseBody
-    ResponseEntity<List<Activity>> getAll(@RequestParam(value = "startTime yyyy-MM-dd HH:mm", required = false) String startTime,
+    ResponseEntity<List<Activity>> getAll(@RequestParam(value = "startTime", required = false) String startTime,
                                           @RequestParam(value = "number", required = false) String number,
                                           @RequestParam(value = "status", required = false) String status,
                                           @RequestParam(value = "place", required = false) String place) {
@@ -140,7 +140,7 @@ public class ActivityController {
     })
     @GetMapping(value = "/user/{id}")
     public @ResponseBody
-    ResponseEntity<List<Activity>> getAllByUserId(@PathVariable String id, @RequestParam(value = "param1", required = true) String param1) {
+    ResponseEntity<List<Activity>> getAllByUserId(@PathVariable String id, @RequestParam(value = "param1", required = false) String param1) {
         List<Activity> activities = activityService.getAllByUserId(id);
         HttpStatus resCode = activities.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
         return new ResponseEntity<>(activities, resCode);
@@ -154,8 +154,8 @@ public class ActivityController {
     })
     @GetMapping(value = "/owner/{id}")
     public @ResponseBody
-    ResponseEntity<List<Activity>> getAllByOwnerId(@PathVariable String ownerId) {
-        List<Activity> activities = activityService.getAllByOwnerId(ownerId);
+    ResponseEntity<List<Activity>> getAllByOwnerId(@PathVariable String id) {
+        List<Activity> activities = activityService.getAllByOwnerId(id);
         HttpStatus resCode = activities.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
         return new ResponseEntity<>(activities, resCode);
     }

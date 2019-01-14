@@ -7,7 +7,7 @@ public interface UserService {
 
     User get(String id);
 
-    HttpStatus add(User user);
+    HttpStatus addOrUpdate(User user);
 
     HttpStatus likeOrThread(String id, int maCode);
 

@@ -10,13 +10,11 @@ public class UserDTO implements Serializable {
 
     private String name;
 
-    private String weChatId;
-
     private int age;
 
-    private int likeNum = 0;
+    private int likeNum;
 
-    private int treadNum = 0;
+    private int treadNum;
 
-    private String labels = "";
+    private String labels;
 }

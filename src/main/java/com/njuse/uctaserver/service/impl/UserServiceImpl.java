@@ -28,9 +28,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public HttpStatus add(User user) {
-        if(userRepo.existsById(user.getId()))
-            return HttpStatus.FOUND;
+    public HttpStatus addOrUpdate(User user) {
+        if(userRepo.existsById(user.getId())) {
+            userRepo.save(user);
+            return HttpStatus.OK;
+        }
         userRepo.save(user);
         return HttpStatus.CREATED;
     }

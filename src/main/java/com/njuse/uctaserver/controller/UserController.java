@@ -78,7 +78,7 @@ public class UserController {
     })
     @PostMapping(value = "/{id}/{maCode}")
     public @ResponseBody
-    ResponseEntity<String> audit(@PathVariable String id, @RequestBody int maCode) {
+    ResponseEntity<String> likeOrThread(@PathVariable String id, @PathVariable int maCode) {
         HttpStatus resCode = userService.likeOrThread(id, maCode);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
@@ -92,10 +92,10 @@ public class UserController {
     })
     @PostMapping(value = "/")
     public @ResponseBody
-    ResponseEntity<String> create(@RequestBody UserDTO userDTO) {
+    ResponseEntity<String> createOrUpdate(@RequestBody UserDTO userDTO) {
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
-        HttpStatus resCode = userService.add(user);
+        HttpStatus resCode = userService.addOrUpdate(user);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 

@@ -94,7 +94,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public List<Activity> getAllByName(String name) {
-        List<Activity> activities = activityRepo.findAllByName(name);
+        List<Activity> activities = activityRepo.findAllByNameContaining(name);
         return activities.isEmpty() ? Collections.emptyList() : activities;
     }
 

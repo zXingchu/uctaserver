@@ -13,6 +13,6 @@ public interface ActivityRepo extends JpaRepository<Activity, String> {
 
     List<Activity> findAllByAuditStatus(String auditStatus);
 
-    List<Activity> findAllByName(String name);
+    List<Activity> findAllByNameContaining(String name);
 
 }

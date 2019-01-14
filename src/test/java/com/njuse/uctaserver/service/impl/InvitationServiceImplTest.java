@@ -35,7 +35,7 @@ public class InvitationServiceImplTest {
 		assertEquals(HttpStatus.NOT_FOUND.value(),invitationService.invite("weq","ss","sss").value());
 		assertEquals(HttpStatus.NOT_FOUND.value(),invitationService.invite("2","ss","sss").value());
 		assertEquals(HttpStatus.UNAUTHORIZED.value(),invitationService.invite("2","1","sss").value());
-		assertEquals(HttpStatus.OK.value(),invitationService.invite("2","1","22222222222").value());
+		assertEquals(HttpStatus.OK.value(),invitationService.invite("2","1","23").value());
 
 
 	}
