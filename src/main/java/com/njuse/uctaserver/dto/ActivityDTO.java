@@ -2,6 +2,8 @@ package com.njuse.uctaserver.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.njuse.uctaserver.until.ActivityStatus;
+import com.njuse.uctaserver.until.AuditStatus;
 import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
@@ -27,8 +29,8 @@ public class ActivityDTO implements Serializable {
 
     private String ownerId;
 
-    private String status;
+    private String status = ActivityStatus.BEFORE_ACT.getName();
 
-    private String auditStatus;
+    private String auditStatus = AuditStatus.AUDIT.getName();
 
 }
