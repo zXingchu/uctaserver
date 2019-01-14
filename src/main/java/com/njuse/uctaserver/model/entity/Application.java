@@ -28,7 +28,7 @@ public class Application implements Serializable {
 
     private String userId;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date time = new Date();
 
     private String description;

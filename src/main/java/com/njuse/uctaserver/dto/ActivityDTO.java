@@ -11,10 +11,10 @@ public class ActivityDTO implements Serializable {
 
     private String id;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date startTime;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date endTime;
 
     private String name;
