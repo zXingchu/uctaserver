@@ -40,7 +40,7 @@ public class UserServiceImplTest {
 		assertEquals(HttpStatus.OK.value(),userService.addOrUpdate(user).value());
 		User a=new User();
 		a.setId("2");
-		a.setAge(22);
+		a.setGender(1);
 		a.setLabels("ssss");
 		a.setLikeNum(21);
 		a.setName("是大大撒");

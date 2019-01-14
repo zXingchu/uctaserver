@@ -152,7 +152,7 @@ public class ActivityServiceImplTest {
     }
     @Test
     public void test_09_getAllByOwner(){
-        List<Activity> activities=activityService.getAllByOwnerId("张文卿");
+        List<Activity> activities=activityService.getAllByOwnerId("1832247");
         assertTrue(activities.size() > 0);
         assertTrue(activityService.getAllByOwnerId("dsfszz").size()==0);
     }

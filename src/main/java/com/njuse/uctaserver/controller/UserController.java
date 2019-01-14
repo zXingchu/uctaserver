@@ -67,7 +67,7 @@ public class UserController {
 
     @ApiOperation(value = "评价用户点赞或点踩")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "出游活动id", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String", paramType = "path"),
             @ApiImplicitParam(name = "maCode", value = "态度0：like|1:thread", required = true, dataType = "int", paramType = "path")
     })
     @ApiResponses({
@@ -93,8 +93,10 @@ public class UserController {
     @PostMapping(value = "/")
     public @ResponseBody
     ResponseEntity<String> createOrUpdate(@RequestBody UserDTO userDTO) {
-        User user = new User();
-        BeanUtils.copyProperties(userDTO, user);
+        User user = userService.get(userDTO.getId());
+        if(user == null)
+            user = new User();
+        BeanUtils.copyProperties(userDTO, user, "likeNum","treadNum", "labels");
         HttpStatus resCode = userService.addOrUpdate(user);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }

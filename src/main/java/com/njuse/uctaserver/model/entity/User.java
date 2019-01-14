@@ -22,7 +22,13 @@ public class User implements Serializable {
 
     private String name;
 
-    private int age;
+    private int gender;
+
+    private String avatarUrl;
+
+    private String city = "Nanjing";
+
+    private String province = "Jiangsu";
 
     private int likeNum = 0;
 

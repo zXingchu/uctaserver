@@ -46,6 +46,7 @@ public class UserServiceImpl implements UserService {
             user.setLikeNum(user.getLikeNum() + 1);
         else
             user.setTreadNum(user.getTreadNum() + 1);
+        userRepo.save(user);
         return HttpStatus.OK;
     }
 }
