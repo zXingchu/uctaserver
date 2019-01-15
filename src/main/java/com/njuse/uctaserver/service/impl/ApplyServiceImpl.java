@@ -31,6 +31,8 @@ public class ApplyServiceImpl implements ApplyService {
 
     @Override
     public HttpStatus add(Application application) {
+        if(applicationRepo.existsByActIdAndUserId(application.getActId(), application.getUserId()))
+            return HttpStatus.FOUND;
         applicationRepo.save(application);
         String id = application.getId();
         if (id != null) {

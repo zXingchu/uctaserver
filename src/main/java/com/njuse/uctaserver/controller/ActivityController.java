@@ -68,7 +68,7 @@ public class ActivityController {
     public @ResponseBody
     ResponseEntity<String> create(@RequestBody ActivityDTO activityDTO) {
         Activity activity = new Activity();
-        BeanUtils.copyProperties(activityDTO, activity);
+        BeanUtils.copyProperties(activityDTO, activity, "status", "auditStatus");
         HttpStatus resCode = activityService.add(activity);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }

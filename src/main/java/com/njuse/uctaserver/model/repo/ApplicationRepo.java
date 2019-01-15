@@ -26,4 +26,6 @@ public interface ApplicationRepo extends JpaRepository<Application, String> {
             "where aly.actId=?1")
     List<ApplicationDTO> getAllByActId(String actId);
 
+    boolean existsByActIdAndUserId(String actId, String userId);
+
 }

@@ -22,4 +22,6 @@ public class InvitationDTO {
 
     private String inviterName;
 
+    private String status;
+
 }

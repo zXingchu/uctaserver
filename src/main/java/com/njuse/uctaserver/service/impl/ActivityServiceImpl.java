@@ -55,7 +55,7 @@ public class ActivityServiceImpl implements ActivityService {
     public HttpStatus update(ActivityDTO activityDTO) {
         if (activityRepo.existsById(activityDTO.getId())) {
             Activity activity = activityRepo.getOne(activityDTO.getId());
-            BeanUtils.copyProperties(activityDTO, activity);
+            BeanUtils.copyProperties(activityDTO, activity, "status", "auditStatus");
             activityRepo.save(activity);
             return HttpStatus.OK;
         }

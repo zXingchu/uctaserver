@@ -33,13 +33,14 @@ public class ApplyController {
     })
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 302, message = "Found"),
             @ApiResponse(code = 304, message = "Not Modified")
     })
     @PostMapping(value = "/{id}/applications")
     public @ResponseBody
     ResponseEntity<String> joinActivity(@PathVariable String id, @RequestBody ApplicationDTO applicationDTO) {
         Application application = new Application();
-        BeanUtils.copyProperties(applicationDTO, application);
+        BeanUtils.copyProperties(applicationDTO, application, "status");
         HttpStatus resCode = applyService.add(application);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
