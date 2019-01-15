@@ -114,11 +114,6 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public List<Activity> getAll(String hh) {
-        return Collections.emptyList();
-    }
-
-    @Override
     public List<Activity> getAllByOwnerId(String ownerId) {
         if (!userRepo.existsById(ownerId)) {
             return Collections.emptyList();
@@ -130,7 +125,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public List<Activity> getAllByCondition(ActivityDTO activityDTO) {
 
-        return null;
+        return Collections.emptyList();
     }
 
 }

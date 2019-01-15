@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Api(tags = "Activity Controller")
@@ -30,6 +31,7 @@ public class ActivityController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "name", value = "过滤条件 活动名", required = false, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "ownerId", value = "过滤条件 组织者id", required = false, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "userId", value = "过滤条件 参加者id", required = false, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "startTime", value = "过滤条件 开始时间 startTime yyyy-MM-dd HH:mm", required = false, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "number", value = "过滤条件 参与最多人数 number", required = false, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "status", value = "过滤条件 状态 status", required = false, dataType = "String", paramType = "query"),
@@ -43,6 +45,7 @@ public class ActivityController {
     public @ResponseBody
     ResponseEntity<List<Activity>> getAll(@RequestParam(value = "name", required = false) String name,
                                           @RequestParam(value = "ownerId", required = false) String ownerId,
+                                          @RequestParam(value = "userId", required = false) String userId,
                                           @RequestParam(value = "startTime", required = false) String startTime,
                                           @RequestParam(value = "number", required = false) String number,
                                           @RequestParam(value = "status", required = false) String status,
@@ -52,8 +55,10 @@ public class ActivityController {
             activities = activityService.getAllByName(name);
         else if (ownerId != null)
             activities = activityService.getAllByOwnerId(ownerId);
+        else if(userId != null)
+            activities = activityService.getAllByUserId(userId);
         else
-            activities = activityService.getAll();
+            activities =activityService.getAll();
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
 
@@ -66,9 +71,10 @@ public class ActivityController {
     })
     @PostMapping(value = "/")
     public @ResponseBody
-    ResponseEntity<String> create(@RequestBody ActivityDTO activityDTO) {
+    ResponseEntity<String> create(HttpSession httpSession, @RequestBody ActivityDTO activityDTO) {
         Activity activity = new Activity();
-        BeanUtils.copyProperties(activityDTO, activity, "status", "auditStatus");
+        BeanUtils.copyProperties(activityDTO, activity, "status", "auditStatus", "ownerId");
+        activity.setOwnerId(String.valueOf(httpSession.getAttribute("openid")));
         HttpStatus resCode = activityService.add(activity);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
@@ -138,37 +144,6 @@ public class ActivityController {
         return new ResponseEntity<>(activity, resCode);
     }
 
-
-    @ApiOperation(value = "获取当前用户参与的所有活动")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "param1", value = "过滤条件", required = false, dataType = "String", paramType = "query")
-    })
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 404, message = "Not Found")
-    })
-    @GetMapping(value = "/user/{id}")
-    public @ResponseBody
-    ResponseEntity<List<Activity>> getAllByUserId(@PathVariable String id, @RequestParam(value = "param1", required = false) String param1) {
-        List<Activity> activities = activityService.getAllByUserId(id);
-        HttpStatus resCode = activities.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
-        return new ResponseEntity<>(activities, resCode);
-    }
-
-    @ApiOperation(value = "获取当前用户所拥有的所有活动")
-    @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String", paramType = "path")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 404, message = "Not Found")
-    })
-    @GetMapping(value = "/owner/{id}")
-    public @ResponseBody
-    ResponseEntity<List<Activity>> getAllByOwnerId(@PathVariable String id) {
-        List<Activity> activities = activityService.getAllByOwnerId(id);
-        HttpStatus resCode = activities.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
-        return new ResponseEntity<>(activities, resCode);
-    }
 
     @ApiOperation(value = "获取指定name的所有活动")
     @ApiImplicitParam(name = "name", value = "名称", required = true, dataType = "String", paramType = "path")

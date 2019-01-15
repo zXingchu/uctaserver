@@ -26,8 +26,6 @@ public interface ActivityService {
 
     List<Activity> getAllByUserId(String userId);
 
-    List<Activity> getAll(String hh);
-
     List<Activity> getAllByOwnerId(String ownerId);
 
     List<Activity> getAllByCondition(ActivityDTO activityDTO);
