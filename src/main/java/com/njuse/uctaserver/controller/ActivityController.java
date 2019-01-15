@@ -6,11 +6,16 @@ import com.njuse.uctaserver.service.ActivityService;
 import io.swagger.annotations.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -24,6 +29,38 @@ public class ActivityController {
     @Autowired
     public ActivityController(ActivityService activityService) {
         this.activityService = activityService;
+    }
+
+    private class AcitivtySpec implements Specification<Activity>{
+        private String name;
+        private String ownerId;
+        private String userId;
+        private String startTime;
+        private String number;
+        private String status;
+        private String place;
+
+        public AcitivtySpec(String name, String ownerId, String userId, String startTime, String number, String status, String place) {
+            this.name = name;
+            this.ownerId = ownerId;
+            this.userId = userId;
+            this.startTime = startTime;
+            this.number = number;
+            this.status = status;
+            this.place = place;
+        }
+
+        @Override
+        public Predicate toPredicate(Root<Activity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+            Predicate p = criteriaBuilder.notEqual(root.get("id"),"");
+            if(name!=null&&!name.equals("")){
+                p = criteriaBuilder.and(p,criteriaBuilder.like(root.get("name"),"%"+name+"%"));
+            }
+            if(ownerId!=null&&!ownerId.equals("")){
+                p = criteriaBuilder.and(p,criteriaBuilder.equal(root.get("ownerId"),"%"+ownerId+"%"));
+            }
+            return null;
+        }
     }
 
 
@@ -50,15 +87,13 @@ public class ActivityController {
                                           @RequestParam(value = "number", required = false) String number,
                                           @RequestParam(value = "status", required = false) String status,
                                           @RequestParam(value = "place", required = false) String place) {
-        List<Activity> activities = null;
-        if (name != null)
-            activities = activityService.getAllByName(name);
-        else if (ownerId != null)
-            activities = activityService.getAllByOwnerId(ownerId);
-        else if(userId != null)
-            activities = activityService.getAllByUserId(userId);
-        else
-            activities =activityService.getAll();
+        List<Activity> activities =activityService.getAll();
+        if (name != null && name != "")
+            activities.retainAll(activityService.getAllByName(name));
+        if (ownerId != null && ownerId != "")
+            activities.retainAll(activityService.getAllByOwnerId(ownerId));
+        if(userId != null && userId != "")
+            activities.retainAll(activityService.getAllByUserId(userId));
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
 
