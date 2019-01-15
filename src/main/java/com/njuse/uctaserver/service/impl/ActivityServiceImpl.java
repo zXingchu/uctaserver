@@ -25,7 +25,6 @@ public class ActivityServiceImpl implements ActivityService {
 
     private final ActMemberRepo actMemberRepo;
 
-
     @Autowired
     public ActivityServiceImpl(ActivityRepo activityRepo, UserRepo userRepo, ActMemberRepo actMemberRepo) {
         this.activityRepo = activityRepo;
@@ -34,16 +33,19 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public HttpStatus add(Activity activity) {
-        activityRepo.save(activity);
-        ActivityMember activityMember = new ActivityMember();
-        activityMember.setActId(activity.getId());
-        activityMember.setUserId(activity.getOwnerId());
-        actMemberRepo.save(activityMember);
-        if (activity.getId() != null && activityMember.getId() != null)
+    public HttpStatus addOrUpdate(Activity activity) {
+        if(activity.getId() == null) {
+            activityRepo.save(activity);
+            ActivityMember activityMember = new ActivityMember();
+            activityMember.setActId(activity.getId());
+            activityMember.setUserId(activity.getOwnerId());
+            actMemberRepo.save(activityMember);
             return HttpStatus.CREATED;
-        return HttpStatus.NOT_MODIFIED;
-
+        }else if(!activityRepo.existsById(activity.getId()))
+            return HttpStatus.NOT_FOUND;
+        else
+            activityRepo.save(activity);
+        return HttpStatus.OK;
     }
 
     @Override
@@ -55,17 +57,6 @@ public class ActivityServiceImpl implements ActivityService {
             return HttpStatus.NOT_MODIFIED;
         }
         return HttpStatus.OK;
-    }
-
-    @Override
-    public HttpStatus update(ActivityDTO activityDTO) {
-        if (activityRepo.existsById(activityDTO.getId())) {
-            Activity activity = activityRepo.getOne(activityDTO.getId());
-            BeanUtils.copyProperties(activityDTO, activity, "status", "auditStatus");
-            activityRepo.save(activity);
-            return HttpStatus.OK;
-        }
-        return HttpStatus.NOT_FOUND;
     }
 
     @Override
@@ -120,12 +111,6 @@ public class ActivityServiceImpl implements ActivityService {
         }
         List<Activity> activities = activityRepo.findAllByOwnerIdOrderByStartTimeDesc(ownerId);
         return activities.isEmpty() ? Collections.emptyList() : activities;
-    }
-
-    @Override
-    public List<Activity> getAllByCondition(ActivityDTO activityDTO) {
-
-        return Collections.emptyList();
     }
 
 }

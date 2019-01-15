@@ -1,6 +1,5 @@
 package com.njuse.uctaserver.service;
 
-import com.njuse.uctaserver.dto.ActivityDTO;
 import com.njuse.uctaserver.model.entity.Activity;
 import org.springframework.http.HttpStatus;
 
@@ -8,11 +7,9 @@ import java.util.List;
 
 public interface ActivityService {
 
-    HttpStatus add(Activity activity);
+    HttpStatus addOrUpdate(Activity activity);
 
     HttpStatus delete(String id);
-
-    HttpStatus update(ActivityDTO activityDTO);
 
     HttpStatus audit(String id, int res);
 
@@ -28,5 +25,4 @@ public interface ActivityService {
 
     List<Activity> getAllByOwnerId(String ownerId);
 
-    List<Activity> getAllByCondition(ActivityDTO activityDTO);
 }

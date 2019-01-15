@@ -52,7 +52,7 @@ public class ActivityServiceImplTest {
 
     @Test
     public void test_01_add() {
-        assertEquals(activityService.add(activity).value(), HttpStatus.CREATED.value());
+        assertEquals(activityService.addOrUpdate(activity).value(), HttpStatus.CREATED.value());
         testId = activity.getId();
     }
 
@@ -67,44 +67,44 @@ public class ActivityServiceImplTest {
     @Test
     public void test_03_update() {
         Activity activity2 = activityService.get(testId);
-        ActivityDTO activityDTO =new ActivityDTO();
+        Activity activityDTO =new Activity();
         BeanUtils.copyProperties(activity2, activityDTO);
         String testStr = "测试通过";
         activityDTO.setDescription(testStr);
         activityDTO.setAuditStatus(AuditStatus.ACCEPT.getName());
-        activityService.update(activityDTO);
+        activityService.addOrUpdate(activityDTO);
         Activity activity3 = activityService.get(testId);
         assertEquals(testStr, activity3.getDescription());
         List<Activity> activities = activityService.getAll();
         assertTrue(activities.size() > 0);
         Activity activity1 = new Activity();
         activity1.setId("张文卿");
-		ActivityDTO activityDTO1=new ActivityDTO();
+		Activity activityDTO1=new Activity();
 		BeanUtils.copyProperties(activity1,activityDTO1);
 
-		HttpStatus httpStatus = activityService.update(activityDTO1);
+		HttpStatus httpStatus = activityService.addOrUpdate(activityDTO1);
         assertEquals(HttpStatus.NOT_FOUND.value(), httpStatus.value());
 
 
 
         Activity activityReject = activityService.get(testId);
-		ActivityDTO activityDTOR =new ActivityDTO();
+		Activity activityDTOR =new Activity();
 		BeanUtils.copyProperties(activityReject, activityDTOR);
         String testStr2 = "测试未通过";
 
         activityDTOR.setDescription(testStr2);
 		activityDTOR.setAuditStatus(AuditStatus.REJECT.getName());
-        activityService.update(activityDTOR);
+        activityService.addOrUpdate(activityDTOR);
         Activity activityR = activityService.get(testId);
         assertEquals(testStr2, activityR.getDescription());
 
         Activity activityAudit = activityService.get(testId);
-		ActivityDTO activityDTOAudit =new ActivityDTO();
+		Activity activityDTOAudit =new Activity();
 		BeanUtils.copyProperties(activityAudit, activityDTOAudit);
         String testStr1 = "测试中";
 		activityDTOAudit.setDescription(testStr1);
 		activityDTOAudit.setAuditStatus(AuditStatus.AUDIT.getName());
-        activityService.update(activityDTOAudit);
+        activityService.addOrUpdate(activityDTOAudit);
         Activity activityA = activityService.get(testId);
         assertEquals(testStr1, activityA.getDescription());
 

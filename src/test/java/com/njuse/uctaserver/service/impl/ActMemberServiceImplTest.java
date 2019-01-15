@@ -51,6 +51,6 @@ public class ActMemberServiceImplTest {
     @Test
     public void test01_getUsersPartInAct() throws Exception {
         assertEquals(Collections.emptyList(), actMemberService.getUsersPartInAct("45"));
-        assertTrue(actMemberService.getUsersPartInAct("2").size() == 0);
+        assertTrue(actMemberService.getUsersPartInAct("2后后后后后扩军军扩").size() == 0);
     }
 }

@@ -62,7 +62,7 @@ public class ActivityController {
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "创建出游活动")
+    @ApiOperation(value = "创建出游活动或更新指定id出游活动")
     @ApiImplicitParam(name = "activityDTO", value = "出游活动详情实体类 时间yyyy-MM-dd HH:mm", required = true, dataType = "ActivityDTO", paramType = "body")
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created"),
@@ -71,11 +71,11 @@ public class ActivityController {
     })
     @PostMapping(value = "/")
     public @ResponseBody
-    ResponseEntity<String> create(HttpSession httpSession, @RequestBody ActivityDTO activityDTO) {
+    ResponseEntity<String> createOrUpdate(HttpSession httpSession, @RequestBody ActivityDTO activityDTO) {
         Activity activity = new Activity();
         BeanUtils.copyProperties(activityDTO, activity, "status", "auditStatus", "ownerId");
         activity.setOwnerId(String.valueOf(httpSession.getAttribute("openid")));
-        HttpStatus resCode = activityService.add(activity);
+        HttpStatus resCode = activityService.addOrUpdate(activity);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 
@@ -90,25 +90,6 @@ public class ActivityController {
     public @ResponseBody
     ResponseEntity<String> delete(@PathVariable String id) {
         HttpStatus resCode = activityService.delete(id);
-        return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
-    }
-
-    @ApiOperation(value = "更新指定id出游活动")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "出游活动id", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "activityDTO", value = "出游活动详情实体类", required = true, dataType = "ActivityDTO", paramType = "body")
-    })
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 304, message = "Not Modified"),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 420, message = "Method Failure"),
-            @ApiResponse(code = 404, message = "Not Found")
-    })
-    @PostMapping(value = "/{id}")
-    public @ResponseBody
-    ResponseEntity<String> update(@PathVariable String id, @RequestBody ActivityDTO activityDTO) {
-        HttpStatus resCode = activityService.update(activityDTO);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 
