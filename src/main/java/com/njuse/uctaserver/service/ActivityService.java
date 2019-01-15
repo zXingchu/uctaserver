@@ -30,4 +30,5 @@ public interface ActivityService {
 
     List<Activity> getAllByOwnerId(String ownerId);
 
+    List<Activity> getAllByCondition(ActivityDTO activityDTO);
 }

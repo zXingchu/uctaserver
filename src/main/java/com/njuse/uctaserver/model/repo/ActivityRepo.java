@@ -9,10 +9,13 @@ import java.util.List;
 @Repository
 public interface ActivityRepo extends JpaRepository<Activity, String> {
     
-    List<Activity> findAllByOwnerId(String ownId);
+    List<Activity> findAllByOwnerIdOrderByStartTimeDesc(String ownId);
 
     List<Activity> findAllByAuditStatus(String auditStatus);
 
-    List<Activity> findAllByNameContaining(String name);
+    List<Activity> findAllByAuditStatusOrderByStartTimeDesc(String auditStatus);
+
+    List<Activity> findAllByNameContainingOrderByStartTimeDesc(String name);
+
 
 }

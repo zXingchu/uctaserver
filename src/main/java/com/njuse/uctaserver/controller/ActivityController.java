@@ -28,6 +28,8 @@ public class ActivityController {
 
     @ApiOperation(value = "获取当前所有活动")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "过滤条件 活动名", required = false, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "ownerId", value = "过滤条件 组织者id", required = false, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "startTime", value = "过滤条件 开始时间 startTime yyyy-MM-dd HH:mm", required = false, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "number", value = "过滤条件 参与最多人数 number", required = false, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "status", value = "过滤条件 状态 status", required = false, dataType = "String", paramType = "query"),
@@ -39,11 +41,19 @@ public class ActivityController {
     })
     @GetMapping(value = "")
     public @ResponseBody
-    ResponseEntity<List<Activity>> getAll(@RequestParam(value = "startTime", required = false) String startTime,
+    ResponseEntity<List<Activity>> getAll(@RequestParam(value = "name", required = false) String name,
+                                          @RequestParam(value = "ownerId", required = false) String ownerId,
+                                          @RequestParam(value = "startTime", required = false) String startTime,
                                           @RequestParam(value = "number", required = false) String number,
                                           @RequestParam(value = "status", required = false) String status,
                                           @RequestParam(value = "place", required = false) String place) {
-        List<Activity> activities = activityService.getAll();
+        List<Activity> activities = null;
+        if (name != null)
+            activities = activityService.getAllByName(name);
+        else if (ownerId != null)
+            activities = activityService.getAllByOwnerId(ownerId);
+        else
+            activities = activityService.getAll();
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
 

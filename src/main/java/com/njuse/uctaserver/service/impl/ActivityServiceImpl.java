@@ -82,7 +82,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public List<Activity> getAll() {
-        List<Activity> activities = activityRepo.findAllByAuditStatus(AuditStatus.ACCEPT.getName());
+        List<Activity> activities = activityRepo.findAllByAuditStatusOrderByStartTimeDesc(AuditStatus.ACCEPT.getName());
         return activities.isEmpty() ? Collections.emptyList() : activities;
     }
 
@@ -94,7 +94,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public List<Activity> getAllByName(String name) {
-        List<Activity> activities = activityRepo.findAllByNameContaining(name);
+        List<Activity> activities = activityRepo.findAllByNameContainingOrderByStartTimeDesc(name);
         return activities.isEmpty() ? Collections.emptyList() : activities;
     }
 
@@ -117,8 +117,14 @@ public class ActivityServiceImpl implements ActivityService {
         if (!userRepo.existsById(ownerId)) {
             return Collections.emptyList();
         }
-        List<Activity> activities = activityRepo.findAllByOwnerId(ownerId);
+        List<Activity> activities = activityRepo.findAllByOwnerIdOrderByStartTimeDesc(ownerId);
         return activities.isEmpty() ? Collections.emptyList() : activities;
+    }
+
+    @Override
+    public List<Activity> getAllByCondition(ActivityDTO activityDTO) {
+
+        return null;
     }
 
 }

@@ -1,7 +1,6 @@
 package com.njuse.uctaserver.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.njuse.uctaserver.until.ActivityStatus;
 import com.njuse.uctaserver.until.AuditStatus;
 import lombok.Data;
@@ -13,10 +12,8 @@ public class ActivityDTO implements Serializable {
 
     private String id;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date startTime;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date endTime;
 
     private String name;
