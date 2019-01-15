@@ -7,8 +7,9 @@ import java.util.List;
 
 public interface ActMemberService {
 
-    HttpStatus delete(String actId, String userId);
+    HttpStatus deleteByUser(String actId, String userId);
 
     List<User> getUsersPartInAct(String actId);
 
+    HttpStatus deleteByOwner(String actId, String userId, String ownerId);
 }

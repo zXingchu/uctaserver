@@ -25,37 +25,32 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ActMemberServiceImplTest {
-	@Autowired
-	ActMemberService actMemberService;
-	@Autowired
-	ActMemberRepo actMemberRepo;
+    @Autowired
+    ActMemberService actMemberService;
+    @Autowired
+    ActMemberRepo actMemberRepo;
 
 
-	private  String  testid;
-	private  ActivityMember activityMember =new ActivityMember();
+    private String testid;
+    private ActivityMember activityMember = new ActivityMember();
 
-	@Before
-	public void setUp() throws Exception{
-		activityMember.setUserId("22");
-		activityMember.setActId("2");
-		activityMember.setId("3");
-		actMemberRepo.save(activityMember);
+    @Before
+    public void setUp() throws Exception {
+        activityMember.setUserId("22");
+        activityMember.setActId("2");
+        activityMember.setId("3");
+        actMemberRepo.save(activityMember);
+    }
 
+    @Test
+    public void test02_delete() throws Exception {
+        assertEquals(HttpStatus.NOT_FOUND.value(), actMemberService.deleteByUser("ss", "qq").value());
+        assertEquals(HttpStatus.OK.value(), actMemberService.deleteByUser("2", "22").value());
+    }
 
-	}
-
-	@Test
-	public void test02_delete() throws Exception {
-		assertEquals(HttpStatus.NOT_FOUND.value(),actMemberService.delete("ss","qq").value());
-		assertEquals(HttpStatus.OK.value(),actMemberService.delete("2","22").value());
-
-
-	}
-
-	@Test
-	public void test01_getUsersPartInAct() throws Exception {
-		assertEquals(Collections.emptyList(),actMemberService.getUsersPartInAct("45"));
-		assertTrue(actMemberService.getUsersPartInAct("2").size()==0);
-
-	}
+    @Test
+    public void test01_getUsersPartInAct() throws Exception {
+        assertEquals(Collections.emptyList(), actMemberService.getUsersPartInAct("45"));
+        assertTrue(actMemberService.getUsersPartInAct("2").size() == 0);
+    }
 }

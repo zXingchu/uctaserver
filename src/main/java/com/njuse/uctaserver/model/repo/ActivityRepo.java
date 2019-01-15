@@ -17,5 +17,6 @@ public interface ActivityRepo extends JpaRepository<Activity, String> {
 
     List<Activity> findAllByNameContainingOrderByStartTimeDesc(String name);
 
+    boolean existsByIdAndOwnerId(String actId, String ownerId);
 
 }

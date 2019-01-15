@@ -70,11 +70,11 @@ public class ActivityServiceImplTest {
         ActivityDTO activityDTO =new ActivityDTO();
         BeanUtils.copyProperties(activity2, activityDTO);
         String testStr = "测试通过";
-        activityDTO.setStatus(testStr);
+        activityDTO.setDescription(testStr);
         activityDTO.setAuditStatus(AuditStatus.ACCEPT.getName());
         activityService.update(activityDTO);
         Activity activity3 = activityService.get(testId);
-        assertEquals(testStr, activity3.getStatus());
+        assertEquals(testStr, activity3.getDescription());
         List<Activity> activities = activityService.getAll();
         assertTrue(activities.size() > 0);
         Activity activity1 = new Activity();
@@ -92,21 +92,21 @@ public class ActivityServiceImplTest {
 		BeanUtils.copyProperties(activityReject, activityDTOR);
         String testStr2 = "测试未通过";
 
-        activityDTOR.setStatus(testStr2);
+        activityDTOR.setDescription(testStr2);
 		activityDTOR.setAuditStatus(AuditStatus.REJECT.getName());
         activityService.update(activityDTOR);
         Activity activityR = activityService.get(testId);
-        assertEquals(testStr2, activityR.getStatus());
+        assertEquals(testStr2, activityR.getDescription());
 
         Activity activityAudit = activityService.get(testId);
 		ActivityDTO activityDTOAudit =new ActivityDTO();
 		BeanUtils.copyProperties(activityAudit, activityDTOAudit);
         String testStr1 = "测试中";
-		activityDTOAudit.setStatus(testStr1);
+		activityDTOAudit.setDescription(testStr1);
 		activityDTOAudit.setAuditStatus(AuditStatus.AUDIT.getName());
         activityService.update(activityDTOAudit);
         Activity activityA = activityService.get(testId);
-        assertEquals(testStr1, activityA.getStatus());
+        assertEquals(testStr1, activityA.getDescription());
 
     }
 

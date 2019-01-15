@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Api(tags = "Activity Member Controller")
@@ -35,8 +35,9 @@ public class ActMemberController {
     })
     @DeleteMapping(value = "/{actId}/users/{userId}")
     public @ResponseBody
-    ResponseEntity<String> delete(@PathVariable String actId, @PathVariable String userId) {
-        HttpStatus resCode = actMemberService.delete(actId, userId);
+    ResponseEntity<String> delete(HttpSession session, @PathVariable String actId, @PathVariable String userId) {
+        String ownerId = String.valueOf(session.getAttribute("openid"));
+        HttpStatus resCode = actMemberService.deleteByOwner(actId, userId, ownerId);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 
@@ -52,6 +53,21 @@ public class ActMemberController {
         List<User> users = actMemberService.getUsersPartInAct(id);
         HttpStatus resCode = users.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
         return new ResponseEntity<>(users, resCode);
+    }
+
+    @ApiOperation(value = "指定 actId 出游活动的成员退出")
+    @ApiImplicitParam(name = "actId", value = "出游活动id", required = true, dataType = "String", paramType = "path")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 304, message = "Not Modified"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @DeleteMapping(value = "/{actId}/user")
+    public @ResponseBody
+    ResponseEntity<String> memberExit(HttpSession session, @PathVariable String actId) {
+        String userId = String.valueOf(session.getAttribute("openid"));
+        HttpStatus resCode = actMemberService.deleteByUser(actId, userId);
+        return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 
 

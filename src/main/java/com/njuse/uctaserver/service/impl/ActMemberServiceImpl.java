@@ -30,7 +30,7 @@ public class ActMemberServiceImpl implements ActMemberService {
     }
 
     @Override
-    public HttpStatus delete(String actId, String userId) {
+    public HttpStatus deleteByUser(String actId, String userId) {
         ActivityMember activityMember = actMemberRepo.findFirstByActIdAndUserId(actId, userId);
         if (activityMember == null)
             return HttpStatus.NOT_FOUND;
@@ -48,6 +48,13 @@ public class ActMemberServiceImpl implements ActMemberService {
         }
         List<User> users = actMemberRepo.getUsersPartInAct(actId);
         return users.isEmpty() ? Collections.emptyList() : users;
+    }
+
+    @Override
+    public HttpStatus deleteByOwner(String actId, String userId, String ownerId) {
+        if (activityRepo.existsByIdAndOwnerId(actId, ownerId))
+            return HttpStatus.NOT_FOUND;
+        return this.deleteByUser(actId, userId);
     }
 
 }
