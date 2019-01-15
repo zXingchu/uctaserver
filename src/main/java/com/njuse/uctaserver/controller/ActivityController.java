@@ -88,11 +88,11 @@ public class ActivityController {
                                           @RequestParam(value = "status", required = false) String status,
                                           @RequestParam(value = "place", required = false) String place) {
         List<Activity> activities =activityService.getAll();
-        if (name != null && name != "")
+        if (name != null && !name.equals(""))
             activities.retainAll(activityService.getAllByName(name));
-        if (ownerId != null && ownerId != "")
+        if (ownerId != null && !ownerId.equals(""))
             activities.retainAll(activityService.getAllByOwnerId(ownerId));
-        if(userId != null && userId != "")
+        if(userId != null && !userId.equals(""))
             activities.retainAll(activityService.getAllByUserId(userId));
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
