@@ -2,6 +2,7 @@ package com.njuse.uctaserver.service.impl;
 
 import com.njuse.uctaserver.dto.ActivityDTO;
 import com.njuse.uctaserver.model.entity.Activity;
+import com.njuse.uctaserver.model.entity.ActivityMember;
 import com.njuse.uctaserver.model.repo.ActMemberRepo;
 import com.njuse.uctaserver.model.repo.ActivityRepo;
 import com.njuse.uctaserver.model.repo.UserRepo;
@@ -35,9 +36,14 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public HttpStatus add(Activity activity) {
         activityRepo.save(activity);
-        if (activity.getId() != null)
+        ActivityMember activityMember = new ActivityMember();
+        activityMember.setActId(activity.getId());
+        activityMember.setUserId(activity.getOwnerId());
+        actMemberRepo.save(activityMember);
+        if (activity.getId() != null && activityMember.getId() != null)
             return HttpStatus.CREATED;
         return HttpStatus.NOT_MODIFIED;
+
     }
 
     @Override
