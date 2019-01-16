@@ -64,11 +64,6 @@ public class ApplyServiceImpl implements ApplyService {
         return entryApplications.isEmpty() ? Collections.emptyList() : entryApplications;
     }
 
-    @Override
-    public List<ApplicationDTO> getAllByActivity(String actId) {
-        List<ApplicationDTO> entryApplications = applicationRepo.getAllByActId(actId);
-        return entryApplications.isEmpty() ? Collections.emptyList() : entryApplications;
-    }
 
     @Override
     public HttpStatus isPermit(String id, int resCode) {

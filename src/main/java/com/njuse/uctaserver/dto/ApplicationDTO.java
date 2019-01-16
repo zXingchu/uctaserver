@@ -21,8 +21,6 @@ public class ApplicationDTO implements Serializable {
 
     private String userId;
 
-    private String nickName;
-
     private String status;
 
 }

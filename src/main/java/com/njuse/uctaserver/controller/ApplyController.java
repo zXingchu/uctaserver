@@ -45,20 +45,6 @@ public class ApplyController {
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 
-    @ApiOperation(value = "获取当前所有活动的所有申请")
-    @ApiImplicitParam(name = "id", value = "出游活动id", required = true, dataType = "String", paramType = "path")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 404, message = "Not FOUND")
-    })
-    @GetMapping(value = "/{id}/applications")
-    public @ResponseBody
-    ResponseEntity<List<ApplicationDTO>> getAllByActId(@PathVariable String id) {
-        List<ApplicationDTO> entryApplications = applyService.getAllByActivity(id);
-        HttpStatus resCode = entryApplications.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
-        return new ResponseEntity<>(entryApplications, resCode);
-    }
-
     @ApiOperation(value = "操作申请结果")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "申请id", required = true, dataType = "String", paramType = "path"),
@@ -76,12 +62,11 @@ public class ApplyController {
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 
-    @ApiOperation(value = "操作申请结果")
+    @ApiOperation(value = "删除申请")
     @ApiImplicitParam(name = "id", value = "申请id", required = true, dataType = "String", paramType = "path")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 304, message = "Not Modified"),
-            @ApiResponse(code = 406, message = "NOT_ACCEPTABLE,人数已满")
+            @ApiResponse(code = 304, message = "Not Modified")
     })
     @DeleteMapping(value = "/applications/{id}")
     public @ResponseBody
@@ -90,7 +75,7 @@ public class ApplyController {
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 
-    @ApiOperation(value = "获取指定id的用户的所有申请")
+    @ApiOperation(value = "获取指定id的用户组织的活动的所有申请")
     @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String", paramType = "path")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),

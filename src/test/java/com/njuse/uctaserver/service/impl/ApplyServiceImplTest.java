@@ -71,14 +71,6 @@ public class ApplyServiceImplTest {
         assertEquals(Collections.emptyList(), applyService.getAllByUserId("33"));
     }
 
-    @Test
-    public void test04_getAllByActivity() {
-        List<ApplicationDTO> applicationList = applyService.getAllByActivity("1");
-        assertTrue(applicationList.size() >= 0);
-        assertEquals(Collections.emptyList(), applyService.getAllByActivity("33"));
-
-
-    }
 
     @Test
     public void test05_isPermit() {
