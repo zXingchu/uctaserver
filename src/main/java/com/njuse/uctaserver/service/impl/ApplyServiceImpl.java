@@ -73,7 +73,7 @@ public class ApplyServiceImpl implements ApplyService {
         Activity activity = activityRepo.getOne(application.getActId());
         int oldStatus = ApplyStatus.getIndex(application.getStatus());
         Boolean statement = Objects.requireNonNull(ApplyStatus.getName(resCode)).equals(application.getStatus());
-        statement = statement || activity.getNumber() >= activity.getPartNumber() && resCode == ApplyStatus.ACCEPT.getIndex();
+        statement = statement || activity.getPartNumber() >= activity.getNumber() && resCode == ApplyStatus.ACCEPT.getIndex();
         if (statement)
             return HttpStatus.NOT_MODIFIED;
         if (oldStatus != ApplyStatus.APPLY.getIndex())
