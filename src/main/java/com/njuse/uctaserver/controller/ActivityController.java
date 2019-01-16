@@ -31,7 +31,7 @@ public class ActivityController {
         this.activityService = activityService;
     }
 
-    private class AcitivtySpec implements Specification<Activity>{
+    private class AcitivtySpec implements Specification<Activity> {
         private String name;
         private String ownerId;
         private String userId;
@@ -52,12 +52,12 @@ public class ActivityController {
 
         @Override
         public Predicate toPredicate(Root<Activity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-            Predicate p = criteriaBuilder.notEqual(root.get("id"),"");
-            if(name!=null&&!name.equals("")){
-                p = criteriaBuilder.and(p,criteriaBuilder.like(root.get("name"),"%"+name+"%"));
+            Predicate p = criteriaBuilder.notEqual(root.get("id"), "");
+            if (name != null && !name.equals("")) {
+                p = criteriaBuilder.and(p, criteriaBuilder.like(root.get("name"), "%" + name + "%"));
             }
-            if(ownerId!=null&&!ownerId.equals("")){
-                p = criteriaBuilder.and(p,criteriaBuilder.equal(root.get("ownerId"),"%"+ownerId+"%"));
+            if (ownerId != null && !ownerId.equals("")) {
+                p = criteriaBuilder.and(p, criteriaBuilder.equal(root.get("ownerId"), "%" + ownerId + "%"));
             }
             return null;
         }
@@ -80,20 +80,24 @@ public class ActivityController {
     })
     @GetMapping(value = "")
     public @ResponseBody
-    ResponseEntity<List<Activity>> getAll(@RequestParam(value = "name", required = false) String name,
+    ResponseEntity<List<Activity>> getAll(HttpSession httpSession,
+                                          @RequestParam(value = "name", required = false) String name,
                                           @RequestParam(value = "ownerId", required = false) String ownerId,
                                           @RequestParam(value = "userId", required = false) String userId,
                                           @RequestParam(value = "startTime", required = false) String startTime,
                                           @RequestParam(value = "number", required = false) String number,
                                           @RequestParam(value = "status", required = false) String status,
                                           @RequestParam(value = "place", required = false) String place) {
-        List<Activity> activities =activityService.getAll();
+        String openid = String.valueOf(httpSession.getAttribute("openid"));
+        List<Activity> activities = activityService.getAll();
         if (name != null && !name.equals(""))
             activities.retainAll(activityService.getAllByName(name));
         if (ownerId != null && !ownerId.equals(""))
             activities.retainAll(activityService.getAllByOwnerId(ownerId));
-        if(userId != null && !userId.equals(""))
+        if (userId != null && !userId.equals(""))
             activities.retainAll(activityService.getAllByUserId(userId));
+        if (userId == null && ownerId == null && openid != null)
+            activities.removeAll(activityService.getAllByUserId(openid));
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
 
