@@ -1,6 +1,5 @@
 package com.njuse.uctaserver.service.impl;
 
-import com.njuse.uctaserver.dto.ActivityDTO;
 import com.njuse.uctaserver.model.entity.Activity;
 import com.njuse.uctaserver.model.entity.ActivityMember;
 import com.njuse.uctaserver.model.repo.ActMemberRepo;
@@ -8,7 +7,6 @@ import com.njuse.uctaserver.model.repo.ActivityRepo;
 import com.njuse.uctaserver.model.repo.UserRepo;
 import com.njuse.uctaserver.service.ActivityService;
 import com.njuse.uctaserver.until.AuditStatus;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

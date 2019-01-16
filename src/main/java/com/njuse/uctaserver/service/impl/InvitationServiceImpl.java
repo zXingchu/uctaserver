@@ -1,10 +1,11 @@
 package com.njuse.uctaserver.service.impl;
 
 import com.njuse.uctaserver.model.entity.Activity;
+import com.njuse.uctaserver.model.entity.ActivityMember;
 import com.njuse.uctaserver.model.entity.Invitation;
+import com.njuse.uctaserver.model.repo.ActMemberRepo;
 import com.njuse.uctaserver.model.repo.ActivityRepo;
 import com.njuse.uctaserver.model.repo.InvitationRepo;
-import com.njuse.uctaserver.model.repo.UserRepo;
 import com.njuse.uctaserver.service.InvitationService;
 import com.njuse.uctaserver.until.InvitationStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class InvitationServiceImpl implements InvitationService{
@@ -22,20 +22,20 @@ public class InvitationServiceImpl implements InvitationService{
 
     private final ActivityRepo activityRepo;
 
-    private final UserRepo userRepo;
+    private final ActMemberRepo actMemberRepo;
+
+
 
     @Autowired
-    public InvitationServiceImpl(InvitationRepo invitationRepo, ActivityRepo activityRepo, UserRepo userRepo) {
+    public InvitationServiceImpl(InvitationRepo invitationRepo, ActivityRepo activityRepo, ActMemberRepo actMemberRepo) {
         this.invitationRepo = invitationRepo;
         this.activityRepo = activityRepo;
-        this.userRepo = userRepo;
+        this.actMemberRepo = actMemberRepo;
     }
 
     @Override
     public HttpStatus invite(String actId, String userId, String inviterId) {
         if(!activityRepo.existsById(actId))
-            return HttpStatus.NOT_FOUND;
-        if(!userRepo.existsById(userId))
             return HttpStatus.NOT_FOUND;
         Activity activity = activityRepo.getOne(actId);
         if(!activity.getOwnerId().equals(inviterId))
@@ -63,15 +63,17 @@ public class InvitationServiceImpl implements InvitationService{
             return HttpStatus.NOT_FOUND;
         Invitation invitation = invitationRepo.getOne(id);
         Activity activity = activityRepo.getOne(invitation.getActId());
-        int oldStatus = InvitationStatus.getIndex(invitation.getStatus());
-        Boolean statement = Objects.requireNonNull(InvitationStatus.getName(resCode)).equals(invitation.getStatus());
-        statement = statement || (activity.getPartNumber() >= activity.getNumber() && resCode == InvitationStatus.ACCEPT.getIndex());
+        int partNumber = actMemberRepo.countAllByActId(invitation.getActId());
+        Boolean statement = partNumber >= activity.getNumber() && resCode == InvitationStatus.ACCEPT.getIndex();
         if (statement)
             return HttpStatus.NOT_MODIFIED;
-        if (oldStatus != InvitationStatus.INVITE.getIndex())
-            activity.setPartNumber(activity.getPartNumber() + 1);
+        ActivityMember activityMember = new ActivityMember();
+        if(resCode == 1) {
+            activityMember.setUserId(invitation.getUserId());
+            activityMember.setActId(invitation.getActId());
+            actMemberRepo.save(activityMember);
+        }
         invitation.setStatus(InvitationStatus.getName(resCode));
-        activityRepo.save(activity);
         invitationRepo.save(invitation);
         return HttpStatus.OK;
     }

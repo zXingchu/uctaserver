@@ -40,7 +40,6 @@ public class ActivityServiceImplTest {
         activity.setName("test");
         activity.setStatus("测试");
         activity.setNumber(10);
-        activity.setPartNumber(10);
         activity.setOwnerId("470be3456a5a4935b09df1268689adf4");
         activity.setAuditStatus("未审核");
         activity.setCreateTime(new Date());

@@ -36,7 +36,6 @@ public class ActMemberServiceImpl implements ActMemberService {
             return HttpStatus.NOT_FOUND;
         actMemberRepo.delete(activityMember);
         Activity activity = activityRepo.getOne(actId);
-        activity.setPartNumber(activity.getPartNumber() - 1);
         activityRepo.save(activity);
         return HttpStatus.OK;
     }

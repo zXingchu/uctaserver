@@ -42,8 +42,6 @@ public class Activity implements Serializable {
 
     private int number;
 
-    private int partNumber;
-
     private String ownerId;
 
     private String auditStatus = AuditStatus.ACCEPT.getName();

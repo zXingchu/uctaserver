@@ -20,4 +20,6 @@ public interface ActivityRepo extends JpaRepository<Activity, String>, JpaSpecif
 
     boolean existsByIdAndOwnerId(String actId, String ownerId);
 
+    
+
 }

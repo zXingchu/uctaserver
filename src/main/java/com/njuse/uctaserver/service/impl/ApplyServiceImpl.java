@@ -2,7 +2,9 @@ package com.njuse.uctaserver.service.impl;
 
 import com.njuse.uctaserver.dto.ApplicationDTO;
 import com.njuse.uctaserver.model.entity.Activity;
+import com.njuse.uctaserver.model.entity.ActivityMember;
 import com.njuse.uctaserver.model.entity.Application;
+import com.njuse.uctaserver.model.repo.ActMemberRepo;
 import com.njuse.uctaserver.model.repo.ActivityRepo;
 import com.njuse.uctaserver.model.repo.ApplicationRepo;
 import com.njuse.uctaserver.service.ApplyService;
@@ -13,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 
 @Service
@@ -23,10 +24,13 @@ public class ApplyServiceImpl implements ApplyService {
 
     private final ActivityRepo activityRepo;
 
+    private final ActMemberRepo actMemberRepo;
+
     @Autowired
-    public ApplyServiceImpl(ApplicationRepo applicationRepo, ActivityRepo activityRepo) {
+    public ApplyServiceImpl(ApplicationRepo applicationRepo, ActivityRepo activityRepo, ActMemberRepo actMemberRepo) {
         this.applicationRepo = applicationRepo;
         this.activityRepo = activityRepo;
+        this.actMemberRepo = actMemberRepo;
     }
 
     @Override
@@ -71,15 +75,19 @@ public class ApplyServiceImpl implements ApplyService {
             return HttpStatus.NOT_FOUND;
         Application application = applicationRepo.getOne(id);
         Activity activity = activityRepo.getOne(application.getActId());
-        int oldStatus = ApplyStatus.getIndex(application.getStatus());
-        Boolean statement = Objects.requireNonNull(ApplyStatus.getName(resCode)).equals(application.getStatus());
-        statement = statement || activity.getPartNumber() >= activity.getNumber() && resCode == ApplyStatus.ACCEPT.getIndex();
+        if(application.getStatus().equals(ApplyStatus.getName(0)))
+            return HttpStatus.ACCEPTED;
+        int partNumber = actMemberRepo.countAllByActId(application.getActId());
+        Boolean statement = partNumber >= activity.getNumber() && resCode == ApplyStatus.ACCEPT.getIndex();
         if (statement)
             return HttpStatus.NOT_MODIFIED;
-        if (oldStatus != ApplyStatus.APPLY.getIndex())
-            activity.setPartNumber(activity.getPartNumber() + 1);
+        ActivityMember activityMember = new ActivityMember();
+        if(resCode == 1) {
+            activityMember.setUserId(application.getUserId());
+            activityMember.setActId(application.getActId());
+            actMemberRepo.save(activityMember);
+        }
         application.setStatus(ApplyStatus.getName(resCode));
-        activityRepo.save(activity);
         applicationRepo.save(application);
         return HttpStatus.OK;
     }
