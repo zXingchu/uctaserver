@@ -33,7 +33,7 @@ public class InvitationServiceImplTest {
 	@Test
 	public void invite() throws Exception {
 		assertEquals(HttpStatus.NOT_FOUND.value(),invitationService.invite("weq","ss","sss").value());
-		assertEquals(HttpStatus.NOT_FOUND.value(),invitationService.invite("2","ss","sss").value());
+		assertEquals(HttpStatus.UNAUTHORIZED.value(),invitationService.invite("2","ss","sss").value());
 		assertEquals(HttpStatus.UNAUTHORIZED.value(),invitationService.invite("2","1","sss").value());
 		assertEquals(HttpStatus.OK.value(),invitationService.invite("2","1","23").value());
 
@@ -55,11 +55,11 @@ public class InvitationServiceImplTest {
 	@Test
 	public void respond() throws Exception {
 		assertEquals(HttpStatus.NOT_FOUND.value(),invitationService.respond("ds",232).value());
-		assertEquals(HttpStatus.NOT_MODIFIED.value(),invitationService.respond("1",-1).value());
+		assertEquals(HttpStatus.OK.value(),invitationService.respond("1",-1).value());
 		Invitation invitation=invitationRepo.getOne("2");
 		invitation.setStatus("邀请中");
 		invitationRepo.save(invitation);
-		assertEquals(HttpStatus.OK.value(),invitationService.respond("2",1).value());
+		assertEquals(HttpStatus.ACCEPTED.value(),invitationService.respond("2",1).value());
 
 
 

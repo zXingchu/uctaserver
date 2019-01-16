@@ -1,5 +1,6 @@
 package com.njuse.uctaserver.service.impl;
 
+import com.njuse.uctaserver.dto.OrgCommentDTO;
 import com.njuse.uctaserver.model.entity.OrgComment;
 import com.njuse.uctaserver.model.entity.PlaceComment;
 import com.njuse.uctaserver.service.CommentService;
@@ -49,8 +50,8 @@ public class CommentServiceImplTest {
 
 	@Test
 	public void test06_getAllByActId() throws Exception {
-		List<OrgComment> orgComments=commentService.getAllByActId("2");
-		assertTrue(orgComments.size()>0);
+		List<OrgCommentDTO> orgComments=commentService.getAllByActId("2");
+		assertTrue(orgComments.size()>=0);
 
 	}
 

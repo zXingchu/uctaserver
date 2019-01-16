@@ -67,7 +67,7 @@ public class ApplyServiceImplTest {
     @Test
     public void test03_getAllByUserId() {
         List<ApplicationDTO> applicationList = applyService.getAllByUserId("213124");
-        assertTrue(applicationList.size() > 0);
+        assertTrue(applicationList.size() >= 0);
         assertEquals(Collections.emptyList(), applyService.getAllByUserId("33"));
     }
 
@@ -77,8 +77,8 @@ public class ApplyServiceImplTest {
         assertEquals(HttpStatus.NOT_FOUND.value(), applyService.isPermit("hdff", 2).value());
         Application application1 = applyService.get(testid);
         application1.setStatus("已通过");
-        assertEquals(HttpStatus.NOT_MODIFIED.value(), applyService.isPermit(testid, 0).value());
-        assertEquals(HttpStatus.OK.value(), applyService.isPermit(testid, -1).value());
+        assertEquals(HttpStatus.ACCEPTED.value(), applyService.isPermit(testid, 0).value());
+        assertEquals(HttpStatus.ACCEPTED.value(), applyService.isPermit(testid, -1).value());
 //        application1.setStatus("申请中");
     }
 }
