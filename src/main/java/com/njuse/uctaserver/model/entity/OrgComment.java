@@ -27,4 +27,6 @@ public class OrgComment implements Serializable {
 
     private String actId;
 
+    private String userId;
+
 }

@@ -33,8 +33,8 @@ public class OrgCommentController {
     })
     @GetMapping(value = "/{id}")
     public @ResponseBody
-    ResponseEntity<List<OrgComment>> getAllByUserId(@PathVariable String id) {
-        List<OrgComment> orgComments = commentService.getAllByActId(id);
+    ResponseEntity<List<OrgCommentDTO>> getAllByUserId(@PathVariable String id) {
+        List<OrgCommentDTO> orgComments = commentService.getAllByActId(id);
         HttpStatus resCode = orgComments.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
         return new ResponseEntity<>(orgComments, resCode);
     }

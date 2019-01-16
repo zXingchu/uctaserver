@@ -1,6 +1,7 @@
 package com.njuse.uctaserver.service.impl;
 
 
+import com.njuse.uctaserver.dto.OrgCommentDTO;
 import com.njuse.uctaserver.model.entity.OrgComment;
 import com.njuse.uctaserver.model.entity.PlaceComment;
 import com.njuse.uctaserver.model.repo.OrgCommentRepo;
@@ -27,8 +28,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<OrgComment> getAllByActId(String actId) {
-        List<OrgComment> orgComments = orgCommentRepo.findAllByActId(actId);
+    public List<OrgCommentDTO> getAllByActId(String actId) {
+        List<OrgCommentDTO> orgComments = orgCommentRepo.getCommentsByActId(actId);
         return orgComments.isEmpty() ? Collections.emptyList() : orgComments;
     }
 
