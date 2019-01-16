@@ -27,7 +27,7 @@ public interface ActMemberRepo extends JpaRepository<ActivityMember, Integer> {
             "act.place, act.number, act.ownerId, act.auditStatus, act.status) " +
             "from com.njuse.uctaserver.model.entity.Activity act " +
             "join com.njuse.uctaserver.model.entity.ActivityMember a on act.id=a.actId " +
-            "where a.userId=?1")
+            "where a.userId=?1 and act.ownerId<>a.userId")
     List<Activity> getAllActByUserId(String userId);
 
     int countAllByActId(String actId);
