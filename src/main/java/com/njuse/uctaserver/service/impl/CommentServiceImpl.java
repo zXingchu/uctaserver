@@ -4,6 +4,7 @@ package com.njuse.uctaserver.service.impl;
 import com.njuse.uctaserver.dto.OrgCommentDTO;
 import com.njuse.uctaserver.model.entity.OrgComment;
 import com.njuse.uctaserver.model.entity.PlaceComment;
+import com.njuse.uctaserver.model.repo.ActivityRepo;
 import com.njuse.uctaserver.model.repo.OrgCommentRepo;
 import com.njuse.uctaserver.model.repo.PlaceCommentRepo;
 import com.njuse.uctaserver.service.CommentService;
@@ -17,12 +18,15 @@ import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
 
+    private final ActivityRepo activityRepo;
+
     private final OrgCommentRepo orgCommentRepo;
 
     private final PlaceCommentRepo placeCommentRepo;
 
     @Autowired
-    public CommentServiceImpl(OrgCommentRepo orgCommentRepo, PlaceCommentRepo placeCommentRepo) {
+    public CommentServiceImpl(ActivityRepo activityRepo, OrgCommentRepo orgCommentRepo, PlaceCommentRepo placeCommentRepo) {
+        this.activityRepo = activityRepo;
         this.orgCommentRepo = orgCommentRepo;
         this.placeCommentRepo = placeCommentRepo;
     }
@@ -41,6 +45,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public HttpStatus addCommentOnOrg(OrgComment orgComment) {
+        if(activityRepo.existsById(orgComment.getId()))
+            return HttpStatus.NOT_FOUND;
         orgCommentRepo.save(orgComment);
         String id = orgComment.getId();
         if (id != null) {

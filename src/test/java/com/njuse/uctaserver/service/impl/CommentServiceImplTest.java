@@ -43,9 +43,6 @@ public class CommentServiceImplTest {
 		placeComment.setScore(87);
 		placeComment.setDescription("saasda");
 		placeComment.setPlace("南京大学");
-
-
-
 	}
 
 	@Test
@@ -65,7 +62,7 @@ public class CommentServiceImplTest {
 	@Test
 	public void test01_addCommentOnOrg() throws Exception {
 		HttpStatus httpStatus=commentService.addCommentOnOrg(orgComment);
-		assertEquals(HttpStatus.CREATED.value(),httpStatus.value());
+		assertEquals(HttpStatus.NOT_FOUND.value(),httpStatus.value());
 	}
 
 	@Test
