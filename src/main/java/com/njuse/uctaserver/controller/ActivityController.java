@@ -112,8 +112,7 @@ public class ActivityController {
     public @ResponseBody
     ResponseEntity<String> createOrUpdate(HttpSession httpSession, @RequestBody ActivityDTO activityDTO) {
         Activity activity = new Activity();
-        BeanUtils.copyProperties(activityDTO, activity, "status", "auditStatus", "ownerId");
-        activity.setOwnerId(String.valueOf(httpSession.getAttribute("openid")));
+        BeanUtils.copyProperties(activityDTO, activity, "status", "auditStatus");
         HttpStatus resCode = activityService.addOrUpdate(activity);
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }

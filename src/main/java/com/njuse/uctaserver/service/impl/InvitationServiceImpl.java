@@ -63,7 +63,7 @@ public class InvitationServiceImpl implements InvitationService{
             return HttpStatus.NOT_FOUND;
         Invitation invitation = invitationRepo.getOne(id);
         Activity activity = activityRepo.getOne(invitation.getActId());
-        if(invitation.getStatus().equals(InvitationStatus.getName(0)))
+        if(!invitation.getStatus().equals(InvitationStatus.getName(0)))
             return HttpStatus.ACCEPTED;
         int partNumber = actMemberRepo.countAllByActId(invitation.getActId());
         Boolean statement = partNumber >= activity.getNumber() && resCode == InvitationStatus.ACCEPT.getIndex();

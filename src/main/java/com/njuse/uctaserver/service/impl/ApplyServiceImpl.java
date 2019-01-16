@@ -75,7 +75,7 @@ public class ApplyServiceImpl implements ApplyService {
             return HttpStatus.NOT_FOUND;
         Application application = applicationRepo.getOne(id);
         Activity activity = activityRepo.getOne(application.getActId());
-        if(application.getStatus().equals(ApplyStatus.getName(0)))
+        if(!application.getStatus().equals(ApplyStatus.getName(0)))
             return HttpStatus.ACCEPTED;
         int partNumber = actMemberRepo.countAllByActId(application.getActId());
         Boolean statement = partNumber >= activity.getNumber() && resCode == ApplyStatus.ACCEPT.getIndex();
