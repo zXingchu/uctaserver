@@ -45,7 +45,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public HttpStatus addCommentOnOrg(OrgComment orgComment) {
-        if(activityRepo.existsById(orgComment.getActId()))
+        if(!activityRepo.existsById(orgComment.getActId()))
             return HttpStatus.NOT_FOUND;
         orgCommentRepo.save(orgComment);
         String id = orgComment.getId();
