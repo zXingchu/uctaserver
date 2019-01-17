@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity(name = "org_comment")
@@ -28,5 +29,7 @@ public class OrgComment implements Serializable {
     private String actId;
 
     private String userId;
+
+    private Date createTime = new Date();
 
 }

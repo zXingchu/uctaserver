@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity(name = "place_comment")
@@ -26,5 +27,7 @@ public class PlaceComment implements Serializable {
     private String description;
 
     private double score;
+
+    private Date createTime = new Date();
 
 }
