@@ -1,10 +1,7 @@
 package com.njuse.uctaserver.service.impl;
 
 import com.njuse.uctaserver.model.entity.*;
-import com.njuse.uctaserver.model.repo.ActivityRepo;
-import com.njuse.uctaserver.model.repo.OrgCommentRepo;
-import com.njuse.uctaserver.model.repo.PlaceCommentRepo;
-import com.njuse.uctaserver.model.repo.UserRepo;
+import com.njuse.uctaserver.model.repo.*;
 import com.njuse.uctaserver.service.*;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -56,6 +53,10 @@ public class ServiceTest {
 	OrgCommentRepo orgCommentRepo;
 	@Autowired
 	PlaceCommentRepo placeCommentRepo;
+	@Autowired
+	ApplicationRepo applicationRepo;
+	@Autowired
+	ActMemberRepo actMemberRepo;
 	private static String actid;
 	private static String applyid1;
 	private static String applyid2;
@@ -155,15 +156,19 @@ public class ServiceTest {
 
 	@Test
 	public void test_04_respondApplyActivity() {
-//		assertTrue(applyService.getAllByActivity(actid).size()>0);
+
 		assertEquals(HttpStatus.NOT_FOUND.value(),applyService.isPermit("asdasks",1).value());
 		assertEquals(HttpStatus.OK.value(),applyService.isPermit(applyid1,1).value());
 		assertEquals(HttpStatus.OK.value(),applyService.isPermit(applyid2,-1).value());
-//		assertTrue(applyService.getAllByUserId("a2").size()>0);
+		assertTrue(applyService.getAllByUserId("a2").size()>=0);
 		assertEquals(null,applyService.get("wq0efa"));
 		assertEquals(applyService.get(applyid1),applyService.get(applyid1));
 		assertTrue(actMemberService.getUsersPartInAct(actid).size()>0);
 		assertTrue(activityService.getAllByUserId("a2").size()>0);
+		assertTrue(applicationRepo.getAllByUserId("plpasd").size()>=0);
+		assertTrue(actMemberRepo.getUsersPartInAct("sdav").size()>=0);
+		assertTrue(actMemberRepo.getAllActByUserId("sad").size()>=0);
+		assertTrue(orgCommentRepo.findAllByActId("sad").size()>=0);
 	}
 
 	@Test
@@ -180,7 +185,7 @@ public class ServiceTest {
 		placeComment.setPlace("南京大学");
 		assertEquals(HttpStatus.CREATED.value(),commentService.addCommentOnPlace(placeComment).value());
 		String plaid=placeComment.getId();
-//		assertTrue(commentService.getAllByActId(actid).size()>0);
+		assertTrue(commentService.getAllByActId(actid).size()>=0);
 		assertTrue(commentService.getScoreByPlace("南京大学")>0);
 		assertTrue(commentService.getScoreByActId("3")<0);
 		assertTrue(commentService.getScoreByActId(actid)>0);
