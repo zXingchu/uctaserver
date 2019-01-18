@@ -96,8 +96,10 @@ public class ActivityController {
             activities.retainAll(activityService.getAllByOwnerId(ownerId));
         if (userId != null && !userId.equals(""))
             activities.retainAll(activityService.getAllByUserId(userId));
-        if (userId == null && ownerId == null && openid != null)
+        if (userId == null && ownerId == null && openid != null) {
             activities.removeAll(activityService.getAllByUserId(openid));
+            activities.removeAll(activityService.getAllByOwnerId(openid));
+        }
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
 
