@@ -11,4 +11,6 @@ public interface UserService {
 
     HttpStatus likeOrThread(String id, int maCode);
 
+    HttpStatus addLabel(String id, String label);
+
 }

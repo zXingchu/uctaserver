@@ -91,6 +91,25 @@ public class UserController {
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 
+    @ApiOperation(value = "添加用户标签")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "label", value = "string", required = true, dataType = "String", paramType = "path")
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 304, message = "Not Modified"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @PostMapping(value = "/{id}/{label}")
+    public @ResponseBody
+    ResponseEntity<String> addLabel(@PathVariable String id, @PathVariable String label) {
+        HttpStatus resCode = userService.addLabel(id, label);
+        return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
+    }
+
+
     @ApiOperation(value = "创建用户信息")
     @ApiImplicitParam(name = "userDTO", value = "用户详情DTO类", required = true, dataType = "UserDTO", paramType = "body")
     @ApiResponses({

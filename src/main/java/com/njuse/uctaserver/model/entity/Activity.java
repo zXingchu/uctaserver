@@ -44,6 +44,8 @@ public class Activity implements Serializable {
 
     private String ownerId;
 
+    private String pwd = "";
+
     private String auditStatus = AuditStatus.ACCEPT.getName();
 
     private String status = ActivityStatus.BEFORE_ACT.getName();

@@ -32,4 +32,6 @@ public interface ActMemberRepo extends JpaRepository<ActivityMember, Integer> {
 
     int countAllByActId(String actId);
 
+    boolean existsByActIdAndUserId(String actId, String userId);
+
 }

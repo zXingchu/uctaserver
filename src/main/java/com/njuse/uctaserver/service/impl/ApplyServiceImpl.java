@@ -91,4 +91,22 @@ public class ApplyServiceImpl implements ApplyService {
         applicationRepo.save(application);
         return HttpStatus.OK;
     }
+
+    @Override
+    public HttpStatus pwdApply(String userId, String actId, String pwd) {
+        if (!activityRepo.existsById(actId))
+            return HttpStatus.NOT_FOUND;
+        Activity activity = activityRepo.getOne(actId);
+        if(!activity.getPwd().equals(pwd)){
+            return HttpStatus.UNAUTHORIZED;
+        }
+        if(actMemberRepo.existsByActIdAndUserId(actId, userId)){
+            return HttpStatus.NOT_MODIFIED;
+        }
+        ActivityMember activityMember = new ActivityMember();
+        activityMember.setActId(actId);
+        activityMember.setUserId(userId);
+        actMemberRepo.save(activityMember);
+        return HttpStatus.OK;
+    }
 }

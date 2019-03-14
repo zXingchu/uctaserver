@@ -16,4 +16,7 @@ public interface ApplyService {
     List<ApplicationDTO> getAllByUserId(String userId);
 
     HttpStatus isPermit(String id, int resCode);
+
+    HttpStatus pwdApply(String userId, String actId, String pwd);
+
 }
