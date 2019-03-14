@@ -4,6 +4,7 @@ import com.njuse.uctaserver.model.entity.*;
 import com.njuse.uctaserver.model.repo.*;
 import com.njuse.uctaserver.service.*;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -20,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by lenovo on 2019-01-16.
  */
+@Ignore
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(SpringRunner.class)
 @SpringBootTest
