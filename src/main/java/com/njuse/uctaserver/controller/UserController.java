@@ -102,7 +102,7 @@ public class UserController {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    @PostMapping(value = "/{id}/{label}")
+    @PostMapping(value = "/{id}/label/{label}")
     public @ResponseBody
     ResponseEntity<String> addLabel(@PathVariable String id, @PathVariable String label) {
         HttpStatus resCode = userService.addLabel(id, label);
