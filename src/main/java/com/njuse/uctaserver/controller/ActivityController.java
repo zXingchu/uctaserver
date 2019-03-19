@@ -19,6 +19,7 @@ import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpSession;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(tags = "Activity Controller")
 @Controller
@@ -86,7 +87,7 @@ public class ActivityController {
                                           @RequestParam(value = "ownerId", required = false) String ownerId,
                                           @RequestParam(value = "userId", required = false) String userId,
                                           @RequestParam(value = "startTime", required = false) String startTime,
-                                          @RequestParam(value = "number", required = false) String number,
+                                          @RequestParam(value = "number", required = false) int number,
                                           @RequestParam(value = "status", required = false) String status,
                                           @RequestParam(value = "place", required = false) String place,
                                           @RequestParam(value = "sortType",required = false) String sortType) {
@@ -98,6 +99,21 @@ public class ActivityController {
             activities.retainAll(activityService.getAllByOwnerId(ownerId));
         if (userId != null && !userId.equals(""))
             activities.retainAll(activityService.getAllByUserId(userId));
+        if (place != null && !place.equals("")) {
+            activities = activities.stream().filter(
+                    (Activity a) -> a.getPlace().contains(place)
+            ).collect(Collectors.toList());
+        }
+        if (number>0){
+            activities = activities.stream().filter(
+                    (Activity a) -> a.getNumber()<=number
+            ).collect(Collectors.toList());
+        }
+        if (startTime != null && !startTime.equals("")){
+            activities = activities.stream().filter(
+                    (Activity a) -> a.getStartTime().equals(startTime)
+            ).collect(Collectors.toList());
+        }
         if (userId == null && ownerId == null && openid != null) {
             activities.removeAll(activityService.getAllByUserId(openid));
             activities.removeAll(activityService.getAllByOwnerId(openid));
