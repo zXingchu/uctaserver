@@ -17,6 +17,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpSession;
+import java.util.Comparator;
 import java.util.List;
 
 @Api(tags = "Activity Controller")
@@ -87,7 +88,8 @@ public class ActivityController {
                                           @RequestParam(value = "startTime", required = false) String startTime,
                                           @RequestParam(value = "number", required = false) String number,
                                           @RequestParam(value = "status", required = false) String status,
-                                          @RequestParam(value = "place", required = false) String place) {
+                                          @RequestParam(value = "place", required = false) String place,
+                                          @RequestParam(value = "sortType",required = false) String sortType) {
         String openid = String.valueOf(httpSession.getAttribute("openid"));
         List<Activity> activities = activityService.getAll();
         if (name != null && !name.equals(""))
@@ -99,6 +101,37 @@ public class ActivityController {
         if (userId == null && ownerId == null && openid != null) {
             activities.removeAll(activityService.getAllByUserId(openid));
             activities.removeAll(activityService.getAllByOwnerId(openid));
+        }
+        if (sortType != null && !sortType.equals("default")){
+            Comparator<Activity> comparator=null;
+            if(sortType.equals("time")) {
+                comparator=new Comparator<Activity>() {
+                    @Override
+                    public int compare(Activity o1, Activity o2) {
+                        return o1.getStartTime().compareTo(o2.getStartTime());
+                    }
+                };
+            }
+            if(sortType.equals("number")){
+                comparator=new Comparator<Activity>() {
+                    @Override
+                    public int compare(Activity o1, Activity o2) {
+                        int n1 = o1.getNumber();
+                        int n2 = o2.getNumber();
+                        if(n1<n2){
+                            return -1;
+                        }
+                        if(n1==n2){
+                            return 0;
+                        }
+                        if(n1>n2){
+                            return 1;
+                        }
+                        return 0;
+                    }
+                };
+            }
+            activities.sort(comparator);
         }
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
