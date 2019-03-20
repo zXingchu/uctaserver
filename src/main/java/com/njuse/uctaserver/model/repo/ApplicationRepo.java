@@ -13,7 +13,7 @@ public interface ApplicationRepo extends JpaRepository<Application, String> {
 
 
     @Query(value = "select new com.njuse.uctaserver.dto.ApplicationDTO" +
-            "(aly.id, aly.time, aly.actId, a.name, aly.userId, aly.status) " +
+            "(aly.id, aly.time, aly.actId, a.name, aly.userId, aly.status, '') " +
             "from com.njuse.uctaserver.model.entity.Application aly " +
             "join com.njuse.uctaserver.model.entity.Activity a on a.id=aly.actId " +
             "where a.ownerId=?1")
