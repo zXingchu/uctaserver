@@ -41,7 +41,7 @@ public class ApplyController {
     public @ResponseBody
     ResponseEntity<String> joinActivity(@PathVariable String id, @RequestBody ApplicationDTO applicationDTO) {
         HttpStatus resCode;
-        if (applicationDTO.getPwd() != null && applicationDTO.getPwd().equals("")) {
+        if (applicationDTO.getPwd() != null && !applicationDTO.getPwd().equals("")) {
             resCode = applyService.pwdApply(applicationDTO.getUserId(), applicationDTO.getActId(), applicationDTO.getPwd());
         } else {
             Application application = new Application();
