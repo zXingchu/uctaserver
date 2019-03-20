@@ -2,6 +2,7 @@ package com.njuse.uctaserver.controller;
 
 import com.njuse.uctaserver.dto.ApplicationDTO;
 import com.njuse.uctaserver.model.entity.Application;
+import com.njuse.uctaserver.service.ActMemberService;
 import com.njuse.uctaserver.service.ApplyService;
 import io.swagger.annotations.*;
 import org.springframework.beans.BeanUtils;
@@ -39,9 +40,14 @@ public class ApplyController {
     @PostMapping(value = "/{id}/applications")
     public @ResponseBody
     ResponseEntity<String> joinActivity(@PathVariable String id, @RequestBody ApplicationDTO applicationDTO) {
-        Application application = new Application();
-        BeanUtils.copyProperties(applicationDTO, application, "status");
-        HttpStatus resCode = applyService.add(application);
+        HttpStatus resCode;
+        if (applicationDTO.getPwd() != null && applicationDTO.getPwd().equals("")) {
+            resCode = applyService.pwdApply(applicationDTO.getUserId(), applicationDTO.getActId(), applicationDTO.getPwd());
+        } else {
+            Application application = new Application();
+            BeanUtils.copyProperties(applicationDTO, application, "status");
+            resCode = applyService.add(application);
+        }
         return new ResponseEntity<>(resCode.getReasonPhrase(), resCode);
     }
 

@@ -12,4 +12,5 @@ public interface ActMemberService {
     List<User> getUsersPartInAct(String actId);
 
     HttpStatus deleteByOwner(String actId, String userId, String ownerId);
+
 }

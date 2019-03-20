@@ -103,6 +103,10 @@ public class ApplyServiceImpl implements ApplyService {
         if(actMemberRepo.existsByActIdAndUserId(actId, userId)){
             return HttpStatus.NOT_MODIFIED;
         }
+        int partNumber = actMemberRepo.countAllByActId(actId);
+        Boolean statement = partNumber >= activity.getNumber();
+        if (statement)
+            return HttpStatus.NOT_MODIFIED;
         ActivityMember activityMember = new ActivityMember();
         activityMember.setActId(actId);
         activityMember.setUserId(userId);

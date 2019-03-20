@@ -26,6 +26,8 @@ public class ActivityDTO implements Serializable {
 
     private String status;
 
+    private String pwd = "";
+
     private String auditStatus;
 
 }
