@@ -59,10 +59,10 @@ public class UserServiceImpl implements UserService {
         if (labels.equals("")) {
             labels = label + ";1";
         } else {
-            labels = "";
             String[] labelsTemp = labels.split(";");
             String[] labelsStr = labelsTemp[0].split(" ");
             String[] labelsNum = labelsTemp[1].split(" ");
+            labels = "";
 
             int i;
             for (i = 0; i < labelsStr.length; i++) {
@@ -74,6 +74,8 @@ public class UserServiceImpl implements UserService {
             }
             if (i < labelsStr.length) {
                 label = "";
+            }else {
+                label = " " + label;
             }
             labels = StringUtils.join(labelsStr, " ");
             labels = labels + label + ";";
