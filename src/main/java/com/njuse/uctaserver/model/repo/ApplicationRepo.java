@@ -10,8 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ApplicationRepo extends JpaRepository<Application, String> {
-
-
+    
     @Query(value = "select new com.njuse.uctaserver.dto.ApplicationDTO" +
             "(aly.id, aly.time, aly.actId, a.name, aly.userId, aly.status, '') " +
             "from com.njuse.uctaserver.model.entity.Application aly " +

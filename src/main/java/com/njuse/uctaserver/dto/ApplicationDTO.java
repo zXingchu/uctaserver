@@ -23,5 +23,5 @@ public class ApplicationDTO implements Serializable {
 
     private String status;
 
-    private String pwd;
+    private String pwd = "";
 }
