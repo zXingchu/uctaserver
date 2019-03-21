@@ -10,7 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @Api(tags = "Organization Comment Controller")
@@ -70,6 +74,22 @@ public class OrgCommentController {
     ResponseEntity<Double> getScore(@PathVariable String id) {
         Double memberComment = commentService.getScoreByActId(id);
         return new ResponseEntity<>(memberComment, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/uploadImg")
+    public @ResponseBody
+    ResponseEntity<String> uploadImg(@RequestPart("image") MultipartFile image) throws IOException {
+//        String filename=image.getOriginalFilename();
+        String filename=new Date().getTime()+".jpg";
+        File dir= new File("/home/img");
+        MultipartFile file=image;
+        if (!(file.getOriginalFilename().equals(""))) {
+
+            file.transferTo(new File(dir + "/" + filename));
+        }
+        System.out.print(filename);
+
+        return new ResponseEntity<>(filename, HttpStatus.OK);
     }
 
 }
