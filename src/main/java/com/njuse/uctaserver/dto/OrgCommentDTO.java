@@ -24,5 +24,6 @@ public class OrgCommentDTO implements Serializable {
     private String nickName;
 
     private String userId;
+    private String img;
 
 }

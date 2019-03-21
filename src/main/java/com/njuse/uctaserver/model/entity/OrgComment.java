@@ -31,5 +31,6 @@ public class OrgComment implements Serializable {
     private String userId;
 
     private Date createTime = new Date();
+    private String img;
 
 }
