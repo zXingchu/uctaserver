@@ -14,7 +14,7 @@ public interface OrgCommentRepo extends JpaRepository<OrgComment, String> {
     List<OrgComment> findAllByActId(String actId);
 
     @Query("select new com.njuse.uctaserver.dto.OrgCommentDTO" +
-            "(o.id, o.description, o.score, o.actId, u.avatarUrl, u.nickName, o.userId) " +
+            "(o.id, o.description, o.score, o.actId, u.avatarUrl, u.nickName, o.userId,o.img) " +
             "from com.njuse.uctaserver.model.entity.OrgComment o " +
             "join com.njuse.uctaserver.model.entity.User u on o.userId=u.id " +
             "where o.actId=?1 order by o.createTime desc")
